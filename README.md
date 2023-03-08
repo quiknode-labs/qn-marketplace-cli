@@ -68,7 +68,7 @@ qn-marketplace-cli pudd --base-url=http://localhost:3000/ --basic-auth=q24rqaerg
 
 QuickNode Marketplace add-ons can provide a user-interface or dashboard that QuickNode customers can access from a link on their quicknode.com account. In order to seamlessly these customers from quicknode.com to Marketplace add-ons, an add-on can implement SSO. You can read [this guide](https://www.quicknode.com/guides/quicknode-products/marketplace/how-sso-works-for-marketplace-partners/) for more information on how SSO works with the QuickNode Marketplace.
 
-To test your SSO implementation, you can run this command:
+To test your SSO implementation, run this command:
 
 ```sh
 qn-marketplace-cli sso --url=http://localhost:3000/dashboard --jwt-secret=your-secret
@@ -77,7 +77,8 @@ qn-marketplace-cli sso --url=http://localhost:3000/dashboard --jwt-secret=your-s
 
 ### JSON-RPC Testing
 
-QuickNode Marketplace add-ons can add additional RPC methods to the JSON-RPC endpoint. Please read [this guide](https://www.quicknode.com/guides/quicknode-products/marketplace/how-to-create-an-rpc-add-on-for-marketplace/) for more information.
+QuickNode Marketplace add-ons extends our capabilities by adding new JSON-RPC methods to QuickNode's existing endpoints.
+Please read [this guide](https://www.quicknode.com/guides/quicknode-products/marketplace/how-to-create-an-rpc-add-on-for-marketplace/) for more information.
 
 If your add-on has RPC methods, the `qn-marketplace-cli` allows you to test your implementation by making some JSON-RPC calls to your application.
 
@@ -87,10 +88,9 @@ qn-marketplace-cli rpc  --url=http://localhost:3000/rpc --method=your_addOnMetho
 
 ## Development
 
-`qn-marketplace-cli` is build with [Go](https://go.dev/) and [Cobra](https://github.com/spf13/cobra) and released under an [MIT License](./LICENSE.txt).
+`qn-marketplace-cli` is developed using [Go](https://go.dev/) and [Cobra](https://github.com/spf13/cobra) and released under an [MIT License](./LICENSE.txt).
 
 We welcome contributions to this repository to help us improve the CLI.
-
 
 To fetch, build and install from the Github source:
 
