@@ -11,7 +11,7 @@ The CLI is designed to allow you to test your QuickNode Marketplace add-ons dire
 
 ## Getting Started & Installation
 
-To install `qn-marketplace-cli` to your machine, you can download a pre-built binary for your operating system from the [binaries](./binaries) directory of this repo.
+To install `qn-marketplace-cli` to your machine, you can download a pre-built binary for your operating system from the [bin](./bin) directory of this repo.
 
 You can also download this repository and build the code on your local machine. See the [Development](#development) section below for more information on how to do that.
 
@@ -29,20 +29,39 @@ qn-marketplace-cli help
 ### PUDD Testing
 
 QuickNode Marketplace add-ons [must implement four provisioning API endpoints](https://www.quicknode.com/guides/quicknode-products/marketplace/how-provisioning-works-for-marketplace-partners/):
-* Provision (POST): called when a QuickNode customers installs the add-on on an endpoint.
-* Update (PUT): called when a previously provisioned endpoint gets updated.
-* Deactivate Endpoint (DELETE): called when a previously provisioned endpoint gets discarded.
-* Deprovision (DELETE): called when the add-on is uninstalled for a customer account (for all endpoints)
+* __Provision (POST)__: called when a QuickNode customers installs the add-on on an endpoint.
+* __Update (PUT)__: called when a previously provisioned endpoint gets updated.
+* __Deactivate Endpoint (DELETE)__: called when a previously provisioned endpoint gets discarded.
+* __Deprovision (DELETE)__: called when the add-on is uninstalled for a customer account (for all endpoints)
 
 
 The `qn-marketplace-cli` has 4 different commands that allows you to test each one of these actions in isolation:
-* `qn-marketplace-cli provision --url=http://localhost:3000/provision --basic-auth=q24rqaergser --chain=ethereum --network=mainnet --plan=your-plan-slug --quicknode-id=abcdef --endpoint-id=foobar`
-* `qn-marketplace-cli update --url=http://localhost:3000/update --basic-auth=q24rqaergser --chain=ethereum --network=mainnet --plan=your-plan-slug --quicknode-id=abcdef --endpoint-id=foobar`
-* `qn-marketplace-cli deactivate --url=http://localhost:3000/deactivate_endpoint --basic-auth=q24rqaergser --endpoint-id=foobar`
-* `qn-marketplace-cli deprovision --url=http://localhost:3000/deprovision --basic-auth=q24rqaergser --quicknode-id=abcdef`
+
+PROVISION:
+```sh
+qn-marketplace-cli provision --url=http://localhost:3000/provision --basic-auth=q24rqaergser --chain=ethereum --network=mainnet --plan=your-plan-slug --quicknode-id=abcdef --endpoint-id=foobar
+```
+
+UPDATE:
+```sh
+qn-marketplace-cli update --url=http://localhost:3000/update --basic-auth=q24rqaergser --chain=ethereum --network=mainnet --plan=your-plan-slug --quicknode-id=abcdef --endpoint-id=foobar
+```
+
+DEACTIVATE ENDPOINT:
+```sh
+qn-marketplace-cli deactivate --url=http://localhost:3000/deactivate_endpoint --basic-auth=q24rqaergser --endpoint-id=foobar
+```
+
+DEPROVISION:
+```sh
+qn-marketplace-cli deprovision --url=http://localhost:3000/deprovision --basic-auth=q24rqaergser --quicknode-id=abcdef
+```
 
 It also has one command that allows you to test all four actions at once:
-`qn-marketplace-cli pudd --base-url=http://localhost:3000/ --basic-auth=q24rqaergser --chain=ethereum --network=mainnet --plan=your-plan-slug`
+
+```sh
+qn-marketplace-cli pudd --base-url=http://localhost:3000/ --basic-auth=q24rqaergser --chain=ethereum --network=mainnet --plan=your-plan-slug
+```
 
 
 ### Single Sign On (SSO) Testing
@@ -51,7 +70,9 @@ QuickNode Marketplace add-ons can provide a user-interface or dashboard that Qui
 
 To test your SSO implementation, you can run this command:
 
-`qn-marketplace-cli sso --url=http://localhost:3000/dashboard --jwt-secret=your-secret`
+```sh
+qn-marketplace-cli sso --url=http://localhost:3000/dashboard --jwt-secret=your-secret
+```
 
 
 ### JSON-RPC Testing
@@ -60,7 +81,9 @@ QuickNode Marketplace add-ons can add additional RPC methods to the JSON-RPC end
 
 If your add-on has RPC methods, the `qn-marketplace-cli` allows you to test your implementation by making some JSON-RPC calls to your application.
 
-`qn-marketplace-cli rpc  --url=http://localhost:3000/rpc --method=your_addOnMethod --rpc-params='[9, "f"]' --chain=solana --network=mainnet`
+```sh
+qn-marketplace-cli rpc  --url=http://localhost:3000/rpc --method=your_addOnMethod --rpc-params='[9, "f"]' --chain=solana --network=mainnet
+```
 
 ## Development
 
