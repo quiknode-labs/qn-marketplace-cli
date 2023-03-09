@@ -128,3 +128,9 @@ go build
  ```sh
  ./qn-marketplace-cli sso --dashboard-url https://yield-curve.quicknode.com/dash/c7058b5f-90ad-4faa-b7ce-5b7c1b12aeaa --email luc@example.com --name Luc --org QN --quicknode-id 6ec249ce-3457-4b5b-91f6-62c14bc5c316 --jwt-secret jwt-secret
  ```
+
+ FOR RPC:
+
+  ```sh
+ ./qn-marketplace-cli rpc --url http://localhost:3005/provision --rpc-url http://localhost:3005/rpc --rpc-method qn_fetchStuff --rpc-params "[\"abc\",123,\"zoo\"]"
+ ```

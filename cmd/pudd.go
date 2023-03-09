@@ -30,6 +30,7 @@ This only works if your API URLs ends with:
 
 The tool will use the base-url you pass to it and append these to the base URL to call your API.
 `,
+	Args: cobra.OnlyValidArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Printf("*** PUDD ***\n\n")
 		baseUrl := cmd.Flag("base-url").Value.String()
