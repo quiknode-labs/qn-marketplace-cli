@@ -60,7 +60,7 @@ The tool will use the base-url you pass to it and append these to the base URL t
 
 		provisionResponse, err := marketplace.Provision(provisionUrl, request, cmd.Flag("basic-auth").Value.String())
 		if err != nil {
-			fmt.Println(err)
+			color.Red("%s", err)
 			os.Exit(1)
 		}
 		fmt.Printf("\nProvision was successful:\n")
@@ -73,7 +73,7 @@ The tool will use the base-url you pass to it and append these to the base URL t
 		fmt.Printf("%s\n", requestJson)
 		provisionResponseTwo, err := marketplace.Provision(provisionUrl, request, cmd.Flag("basic-auth").Value.String())
 		if err != nil {
-			fmt.Println(err)
+			color.Red("%s", err)
 			os.Exit(1)
 		}
 		fmt.Printf("\nSecond Provision was successful:\n")
@@ -102,7 +102,7 @@ The tool will use the base-url you pass to it and append these to the base URL t
 
 		updateResponse, err := marketplace.Update(updateUrl, updateRequest, cmd.Flag("basic-auth").Value.String())
 		if err != nil {
-			fmt.Println(err)
+			color.Red("%s", err)
 			os.Exit(1)
 		}
 		fmt.Printf("\nUpdate was successful:\n")
@@ -124,7 +124,7 @@ The tool will use the base-url you pass to it and append these to the base URL t
 
 		deactivateResponse, err := marketplace.Deactivate(deactivateUrl, deactivateRequest, cmd.Flag("basic-auth").Value.String())
 		if err != nil {
-			fmt.Println(err)
+			color.Red("%s", err)
 			os.Exit(1)
 		}
 		fmt.Printf("\nDeactivate Endpoint was successful:\n")
@@ -146,7 +146,7 @@ The tool will use the base-url you pass to it and append these to the base URL t
 
 		deprovisionResponse, err := marketplace.Deprovision(deprovisionUrl, deprovisionRequest, cmd.Flag("basic-auth").Value.String())
 		if err != nil {
-			fmt.Println(err)
+			color.Red("%s", err)
 			os.Exit(1)
 		}
 		fmt.Printf("\nDeprovision was successful:\n")

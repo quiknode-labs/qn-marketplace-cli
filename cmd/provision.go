@@ -49,7 +49,7 @@ Learn more at https://www.quicknode.com/guides/quicknode-products/marketplace/ho
 
 		response, err := marketplace.Provision(url, request, cmd.Flag("basic-auth").Value.String())
 		if err != nil {
-			fmt.Println(err)
+			color.Red("%s", err)
 			os.Exit(1)
 		}
 		fmt.Printf("\nProvision was successful:\n")

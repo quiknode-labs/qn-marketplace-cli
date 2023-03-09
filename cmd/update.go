@@ -50,7 +50,7 @@ Learn more at https://www.quicknode.com/guides/quicknode-products/marketplace/ho
 
 		response, err := marketplace.Update(url, request, cmd.Flag("basic-auth").Value.String())
 		if err != nil {
-			fmt.Println(err)
+			color.Red("%s", err)
 			os.Exit(1)
 		}
 		fmt.Printf("\nUpdate was successful:\n")
