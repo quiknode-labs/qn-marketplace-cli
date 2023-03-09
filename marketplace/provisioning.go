@@ -66,7 +66,7 @@ type DeprovisionResponse struct {
 	Status string `json:"status"`
 }
 
-func Provision(url string, payload ProvisionRequest) (ProvisionResponse, error) {
+func Provision(url string, payload ProvisionRequest, basicAuth string) (ProvisionResponse, error) {
 	client := &http.Client{}
 
 	// Convert the payload to JSON
@@ -80,6 +80,7 @@ func Provision(url string, payload ProvisionRequest) (ProvisionResponse, error) 
 		return ProvisionResponse{}, err
 	}
 	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("Authorization", "Basic "+basicAuth)
 	req.Header.Add("X-QN-TESTING", "true")
 
 	res, err := client.Do(req)
@@ -108,7 +109,7 @@ func Provision(url string, payload ProvisionRequest) (ProvisionResponse, error) 
 	return response, nil
 }
 
-func Update(url string, payload UpdateRequest) (UpdateResponse, error) {
+func Update(url string, payload UpdateRequest, basicAuth string) (UpdateResponse, error) {
 	client := &http.Client{}
 
 	// Convert the payload to JSON
@@ -122,6 +123,7 @@ func Update(url string, payload UpdateRequest) (UpdateResponse, error) {
 		return UpdateResponse{}, err
 	}
 	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("Authorization", "Basic "+basicAuth)
 	req.Header.Add("X-QN-TESTING", "true")
 
 	res, err := client.Do(req)
@@ -150,7 +152,7 @@ func Update(url string, payload UpdateRequest) (UpdateResponse, error) {
 	return response, nil
 }
 
-func Deactivate(url string, payload DeactivateRequest) (DeactivateResponse, error) {
+func Deactivate(url string, payload DeactivateRequest, basicAuth string) (DeactivateResponse, error) {
 	client := &http.Client{}
 
 	// Convert the payload to JSON
@@ -164,6 +166,7 @@ func Deactivate(url string, payload DeactivateRequest) (DeactivateResponse, erro
 		return DeactivateResponse{}, err
 	}
 	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("Authorization", "Basic "+basicAuth)
 	req.Header.Add("X-QN-TESTING", "true")
 
 	res, err := client.Do(req)
@@ -192,7 +195,7 @@ func Deactivate(url string, payload DeactivateRequest) (DeactivateResponse, erro
 	return response, nil
 }
 
-func Deprovision(url string, payload DeprovisionRequest) (DeprovisionResponse, error) {
+func Deprovision(url string, payload DeprovisionRequest, basicAuth string) (DeprovisionResponse, error) {
 	client := &http.Client{}
 
 	// Convert the payload to JSON
@@ -206,6 +209,7 @@ func Deprovision(url string, payload DeprovisionRequest) (DeprovisionResponse, e
 		return DeprovisionResponse{}, err
 	}
 	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("Authorization", "Basic "+basicAuth)
 	req.Header.Add("X-QN-TESTING", "true")
 
 	res, err := client.Do(req)

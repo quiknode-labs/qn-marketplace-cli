@@ -59,7 +59,7 @@ var rpcCmd = &cobra.Command{
 		requestJson, _ := json.MarshalIndent(request, "", "  ")
 		fmt.Printf("%s\n", requestJson)
 
-		provisionResponse, err := marketplace.Provision(provisionURL, request)
+		provisionResponse, err := marketplace.Provision(provisionURL, request, cmd.Flag("basic-auth").Value.String())
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -73,7 +73,7 @@ var rpcCmd = &cobra.Command{
 		// First, Create an RPC request object
 		var params []interface{}
 		var paramsFlag = cmd.Flag("rpc-params").Value.String()
-		color.Blue(paramsFlag)
+
 		if paramsFlag != "" {
 			err := json.Unmarshal([]byte(paramsFlag), &params)
 			if err != nil {
@@ -97,7 +97,15 @@ var rpcCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
+		reqBodyIndented, err := json.MarshalIndent(req, "", "  ")
+		if err != nil {
+			color.Red("Error encoding JSON: %", err)
+			os.Exit(1)
+		}
 		// Create an HTTP request with the JSON-RPC request body
+		color.Magenta("\n→ POST %s:\n", cmd.Flag("rpc-url").Value.String())
+		fmt.Printf("%s\n", reqBodyIndented)
+
 		httpReq, err := http.NewRequest("POST", cmd.Flag("rpc-url").Value.String(), bytes.NewBuffer(reqBody))
 		if err != nil {
 			color.Red("Error creating HTTP request: %s", err)
@@ -127,7 +135,7 @@ var rpcCmd = &cobra.Command{
 		}
 
 		// Print the response body
-		fmt.Println("Response body:")
+		fmt.Println("\nResponse body:")
 		responseJson, _ := json.MarshalIndent(respBody, "", "  ")
 		color.Green("%s\n", responseJson)
 	},

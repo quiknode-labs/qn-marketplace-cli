@@ -42,7 +42,7 @@ Learn more at https://www.quicknode.com/guides/quicknode-products/marketplace/ho
 		requestJson, _ := json.MarshalIndent(request, "", "  ")
 		fmt.Printf("%s\n", requestJson)
 
-		response, err := marketplace.Deactivate(url, request)
+		response, err := marketplace.Deactivate(url, request, cmd.Flag("basic-auth").Value.String())
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)

@@ -57,7 +57,7 @@ The tool will use the base-url you pass to it and append these to the base URL t
 		requestJson, _ := json.MarshalIndent(request, "", "  ")
 		fmt.Printf("%s\n", requestJson)
 
-		provisionResponse, err := marketplace.Provision(provisionUrl, request)
+		provisionResponse, err := marketplace.Provision(provisionUrl, request, cmd.Flag("basic-auth").Value.String())
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -70,7 +70,7 @@ The tool will use the base-url you pass to it and append these to the base URL t
 		// Then Provision again to test for idempotent provisions
 		color.Magenta("\n\n→ POST %s (again to test idempotent provisions):\n", provisionUrl)
 		fmt.Printf("%s\n", requestJson)
-		provisionResponseTwo, err := marketplace.Provision(provisionUrl, request)
+		provisionResponseTwo, err := marketplace.Provision(provisionUrl, request, cmd.Flag("basic-auth").Value.String())
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -99,7 +99,7 @@ The tool will use the base-url you pass to it and append these to the base URL t
 		updateRequestJson, _ := json.MarshalIndent(updateRequest, "", "  ")
 		fmt.Printf("%s\n", updateRequestJson)
 
-		updateResponse, err := marketplace.Update(updateUrl, updateRequest)
+		updateResponse, err := marketplace.Update(updateUrl, updateRequest, cmd.Flag("basic-auth").Value.String())
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -121,7 +121,7 @@ The tool will use the base-url you pass to it and append these to the base URL t
 		deactivateRequestJson, _ := json.MarshalIndent(deactivateRequest, "", "  ")
 		fmt.Printf("%s\n", deactivateRequestJson)
 
-		deactivateResponse, err := marketplace.Deactivate(deactivateUrl, deactivateRequest)
+		deactivateResponse, err := marketplace.Deactivate(deactivateUrl, deactivateRequest, cmd.Flag("basic-auth").Value.String())
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -143,7 +143,7 @@ The tool will use the base-url you pass to it and append these to the base URL t
 		deprovisionRequestJson, _ := json.MarshalIndent(deprovisionRequest, "", "  ")
 		fmt.Printf("%s\n", deprovisionRequestJson)
 
-		deprovisionResponse, err := marketplace.Deprovision(deprovisionUrl, deprovisionRequest)
+		deprovisionResponse, err := marketplace.Deprovision(deprovisionUrl, deprovisionRequest, cmd.Flag("basic-auth").Value.String())
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
