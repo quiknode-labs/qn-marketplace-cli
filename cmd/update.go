@@ -52,7 +52,7 @@ Learn more at https://www.quicknode.com/guides/quicknode-products/marketplace/ho
 			os.Exit(1)
 		}
 		fmt.Printf("\nUpdate was successful:\n")
-		fmt.Printf("\tStatus: \t\t%s\n", response.Status)
+		fmt.Printf("  Status:     %s\n", response.Status)
 	},
 }
 
