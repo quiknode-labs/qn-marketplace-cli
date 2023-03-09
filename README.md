@@ -109,3 +109,16 @@ Then:
 ```
 bin/qn-marketplace-cli
 ```
+
+
+## Testing Locally
+
+You can use the following commands to test locally if you have an application that is hosted at http://localhost:3005:
+
+```sh
+go build
+./qn-marketplace-cli provision --url http://localhost:3005/provision --chain ethereum --network mainnet --plan test --quicknode-id foobar --endpoint-id bazbaz
+./qn-marketplace-cli update --url http://localhost:3005/update --chain ethereum --network mainnet --plan test --quicknode-id foobar --endpoint-id bazbaz
+./qn-marketplace-cli deactivate --url http://localhost:3005/deactivate_endpoint  --quicknode-id foobar --endpoint-id bazbaz --chain ethereum --network mainnet
+./qn-marketplace-cli deprovision --url http://localhost:3005/deprovision  --quicknode-id foobar --endpoint-id bazbaz --chain ethereum --network mainnet
+ ```
