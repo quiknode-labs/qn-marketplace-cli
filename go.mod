@@ -6,6 +6,7 @@ require github.com/spf13/cobra v1.6.1
 
 require (
 	github.com/fatih/color v1.14.1 // indirect
+	github.com/golang-jwt/jwt/v5 v5.0.0-rc.1 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.17 // indirect
