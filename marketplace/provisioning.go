@@ -80,6 +80,7 @@ func Provision(url string, payload ProvisionRequest) (ProvisionResponse, error) 
 		return ProvisionResponse{}, err
 	}
 	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("X-QN-TESTING", "true")
 
 	res, err := client.Do(req)
 	if err != nil {
@@ -121,6 +122,7 @@ func Update(url string, payload UpdateRequest) (UpdateResponse, error) {
 		return UpdateResponse{}, err
 	}
 	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("X-QN-TESTING", "true")
 
 	res, err := client.Do(req)
 	if err != nil {
@@ -162,6 +164,7 @@ func Deactivate(url string, payload DeactivateRequest) (DeactivateResponse, erro
 		return DeactivateResponse{}, err
 	}
 	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("X-QN-TESTING", "true")
 
 	res, err := client.Do(req)
 	if err != nil {
@@ -203,6 +206,7 @@ func Deprovision(url string, payload DeprovisionRequest) (DeprovisionResponse, e
 		return DeprovisionResponse{}, err
 	}
 	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("X-QN-TESTING", "true")
 
 	res, err := client.Do(req)
 	if err != nil {
