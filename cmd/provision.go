@@ -5,6 +5,7 @@ Copyright © 2023 QuickNode, Inc.
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 
@@ -20,14 +21,23 @@ var provisionCmd = &cobra.Command{
 
 Learn more at https://www.quicknode.com/guides/quicknode-products/marketplace/how-provisioning-works-for-marketplace-partners/`,
 	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Printf("*** PROVISION ***\n\n")
 		url := cmd.Flag("url").Value.String()
 		request := marketplace.ProvisionRequest{
-			Chain:       cmd.Flag("chain").Value.String(),
-			Network:     cmd.Flag("network").Value.String(),
-			Plan:        cmd.Flag("plan").Value.String(),
-			QuickNodeId: cmd.Flag("quicknode-id").Value.String(),
-			EndpointId:  cmd.Flag("endpoint-id").Value.String(),
+			QuickNodeId:       cmd.Flag("quicknode-id").Value.String(),
+			EndpointId:        cmd.Flag("endpoint-id").Value.String(),
+			Chain:             cmd.Flag("chain").Value.String(),
+			Network:           cmd.Flag("network").Value.String(),
+			Plan:              cmd.Flag("plan").Value.String(),
+			WSSURL:            "wss://long-late-firefly.quiknode.pro/4bb1e6b2dec8294938b6fdfdb7cf0cf70c4e97a2/",
+			HTTPURL:           "https://long-late-firefly.quiknode.pro/4bb1e6b2dec8294938b6fdfdb7cf0cf70c4e97a2/",
+			Referers:          []string{"https://quicknode.com"},
+			ContractAddresses: []string{"0x4d224452801ACEd8B2F0aebE155379bb5D594381"},
 		}
+
+		fmt.Printf("POST %s:\n", url)
+		requestJson, _ := json.MarshalIndent(request, "", "  ")
+		fmt.Printf("%s\n", requestJson)
 
 		response, err := marketplace.Provision(url, request)
 		if err != nil {

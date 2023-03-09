@@ -57,6 +57,8 @@ type DeactivateResponse struct {
 type DeprovisionRequest struct {
 	QuickNodeId   string `json:"quicknode-id"`
 	EndpointId    string `json:"endpoint-id"`
+	Chain         string `json:"chain"`
+	Network       string `json:"network"`
 	DeprovisionAt string `json:"deprovision-at"`
 }
 
@@ -100,6 +102,129 @@ func Provision(url string, payload ProvisionRequest) (ProvisionResponse, error) 
 	if err := json.Unmarshal([]byte(body), &response); err != nil {
 		fmt.Println(err)
 		return ProvisionResponse{}, err
+	}
+
+	return response, nil
+}
+
+func Update(url string, payload UpdateRequest) (UpdateResponse, error) {
+	client := &http.Client{}
+
+	// Convert the payload to JSON
+	payloadBuf := new(bytes.Buffer)
+	json.NewEncoder(payloadBuf).Encode(payload)
+
+	// Create the HTTP request
+	req, err := http.NewRequest("PUT", url, payloadBuf)
+	if err != nil {
+		fmt.Println(err)
+		return UpdateResponse{}, err
+	}
+	req.Header.Add("Content-Type", "application/json")
+
+	res, err := client.Do(req)
+	if err != nil {
+		fmt.Println(err)
+		return UpdateResponse{}, err
+	}
+	defer res.Body.Close()
+
+	if res.StatusCode != http.StatusOK {
+		return UpdateResponse{}, fmt.Errorf("HTTP Request failed with status code: %d", res.StatusCode)
+	}
+
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		fmt.Println(err)
+		return UpdateResponse{}, err
+	}
+
+	var response UpdateResponse
+	if err := json.Unmarshal([]byte(body), &response); err != nil {
+		fmt.Println(err)
+		return UpdateResponse{}, err
+	}
+
+	return response, nil
+}
+
+func Deactivate(url string, payload DeactivateRequest) (DeactivateResponse, error) {
+	client := &http.Client{}
+
+	// Convert the payload to JSON
+	payloadBuf := new(bytes.Buffer)
+	json.NewEncoder(payloadBuf).Encode(payload)
+
+	// Create the HTTP request
+	req, err := http.NewRequest("DELETE", url, payloadBuf)
+	if err != nil {
+		fmt.Println(err)
+		return DeactivateResponse{}, err
+	}
+	req.Header.Add("Content-Type", "application/json")
+
+	res, err := client.Do(req)
+	if err != nil {
+		fmt.Println(err)
+		return DeactivateResponse{}, err
+	}
+	defer res.Body.Close()
+
+	if res.StatusCode != http.StatusOK {
+		return DeactivateResponse{}, fmt.Errorf("HTTP Request failed with status code: %d", res.StatusCode)
+	}
+
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		fmt.Println(err)
+		return DeactivateResponse{}, err
+	}
+
+	var response DeactivateResponse
+	if err := json.Unmarshal([]byte(body), &response); err != nil {
+		fmt.Println(err)
+		return DeactivateResponse{}, err
+	}
+
+	return response, nil
+}
+
+func Deprovision(url string, payload DeprovisionRequest) (DeprovisionResponse, error) {
+	client := &http.Client{}
+
+	// Convert the payload to JSON
+	payloadBuf := new(bytes.Buffer)
+	json.NewEncoder(payloadBuf).Encode(payload)
+
+	// Create the HTTP request
+	req, err := http.NewRequest("DELETE", url, payloadBuf)
+	if err != nil {
+		fmt.Println(err)
+		return DeprovisionResponse{}, err
+	}
+	req.Header.Add("Content-Type", "application/json")
+
+	res, err := client.Do(req)
+	if err != nil {
+		fmt.Println(err)
+		return DeprovisionResponse{}, err
+	}
+	defer res.Body.Close()
+
+	if res.StatusCode != http.StatusOK {
+		return DeprovisionResponse{}, fmt.Errorf("HTTP Request failed with status code: %d", res.StatusCode)
+	}
+
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		fmt.Println(err)
+		return DeprovisionResponse{}, err
+	}
+
+	var response DeprovisionResponse
+	if err := json.Unmarshal([]byte(body), &response); err != nil {
+		fmt.Println(err)
+		return DeprovisionResponse{}, err
 	}
 
 	return response, nil
