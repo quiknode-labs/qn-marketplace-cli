@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/quiknode-labs/qn-marketplace-cli/marketplace"
+	uuid "github.com/satori/go.uuid"
 	"github.com/spf13/cobra"
 )
 
@@ -21,9 +22,15 @@ var deprovisionCmd = &cobra.Command{
 	Long: `Use this command to make sure your API implementation for DEPROVISION is working as expected.
 
 Learn more at https://www.quicknode.com/guides/quicknode-products/marketplace/how-provisioning-works-for-marketplace-partners/`,
+	Args: cobra.OnlyValidArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Printf("*** DEPROVISION ***\n\n")
 		url := cmd.Flag("url").Value.String()
+		if url == "" {
+			fmt.Print("Please provide a URL for the deprovision API via the --url flag\n")
+			os.Exit(1)
+		}
+
 		request := marketplace.DeprovisionRequest{
 			QuickNodeId:   cmd.Flag("quicknode-id").Value.String(),
 			EndpointId:    cmd.Flag("endpoint-id").Value.String(),
@@ -49,10 +56,13 @@ Learn more at https://www.quicknode.com/guides/quicknode-products/marketplace/ho
 func init() {
 	rootCmd.AddCommand(deprovisionCmd)
 
-	deprovisionCmd.PersistentFlags().String("url", "", "The URL of the add-on's update endpoint")
-	deprovisionCmd.PersistentFlags().String("basic-auth", "", "The basic auth credentials for the add-on")
-	deprovisionCmd.PersistentFlags().String("quicknode-id", "", "The QuickNode ID to deprovision the add-on for")
-	deprovisionCmd.PersistentFlags().String("endpoint-id", "", "The endpoint ID for the endpoint you want to deactivate")
-	deprovisionCmd.PersistentFlags().String("chain", "", "The chain to provision the add-on for")
-	deprovisionCmd.PersistentFlags().String("network", "", "The network to provision the add-on for")
+	deprovisionCmd.PersistentFlags().StringP("url", "u", "", "The URL of the add-on's provision endpoint")
+
+	// Note: basic auth defaults to username = Aladdin and password = open sesame
+	deprovisionCmd.PersistentFlags().String("basic-auth", "QWxhZGRpbjpvcGVuIHNlc2FtZQ==", "The basic auth credentials for the add-on. Defaults to username = Aladdin and password = open sesame")
+
+	deprovisionCmd.PersistentFlags().StringP("quicknode-id", "q", uuid.NewV4().String(), "The QuickNode ID to provision the add-on for (optional)")
+	deprovisionCmd.PersistentFlags().StringP("endpoint-id", "e", uuid.NewV4().String(), "The endpoint ID to provision the add-on for (optional)")
+	deprovisionCmd.PersistentFlags().StringP("chain", "c", "ethereum", "The chain to provision the add-on for")
+	deprovisionCmd.PersistentFlags().StringP("network", "n", "mainnet", "The network to provision the add-on for")
 }

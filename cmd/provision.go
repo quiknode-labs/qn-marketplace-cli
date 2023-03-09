@@ -26,7 +26,7 @@ Learn more at https://www.quicknode.com/guides/quicknode-products/marketplace/ho
 		fmt.Printf("*** PROVISION ***\n\n")
 		url := cmd.Flag("url").Value.String()
 		if url == "" {
-			fmt.Print("Please provide a URL for the provision endpoint via the --url flag\n")
+			fmt.Print("Please provide a URL for the provision API via the --url flag\n")
 			os.Exit(1)
 		}
 		request := marketplace.ProvisionRequest{
@@ -70,5 +70,4 @@ func init() {
 	provisionCmd.PersistentFlags().StringP("chain", "c", "ethereum", "The chain to provision the add-on for")
 	provisionCmd.PersistentFlags().StringP("network", "n", "mainnet", "The network to provision the add-on for")
 	provisionCmd.PersistentFlags().StringP("plan", "p", "discover", "The plan to provision the add-on for")
-
 }

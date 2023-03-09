@@ -10,6 +10,7 @@ import (
 	"os"
 
 	"github.com/quiknode-labs/qn-marketplace-cli/marketplace"
+	uuid "github.com/satori/go.uuid"
 	"github.com/spf13/cobra"
 )
 
@@ -20,9 +21,15 @@ var updateCmd = &cobra.Command{
 	Long: `Use this command to make sure your API implementation for UPDATE is working as expected.
 
 Learn more at https://www.quicknode.com/guides/quicknode-products/marketplace/how-provisioning-works-for-marketplace-partners/`,
+	Args: cobra.OnlyValidArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Printf("*** UPDATE ***\n\n")
 		url := cmd.Flag("url").Value.String()
+		if url == "" {
+			fmt.Print("Please provide a URL for the update API via the --url flag\n")
+			os.Exit(1)
+		}
+
 		request := marketplace.UpdateRequest{
 			QuickNodeId:       cmd.Flag("quicknode-id").Value.String(),
 			EndpointId:        cmd.Flag("endpoint-id").Value.String(),
@@ -52,11 +59,14 @@ Learn more at https://www.quicknode.com/guides/quicknode-products/marketplace/ho
 func init() {
 	rootCmd.AddCommand(updateCmd)
 
-	updateCmd.PersistentFlags().String("url", "", "The URL of the add-on's update endpoint")
-	updateCmd.PersistentFlags().String("basic-auth", "", "The basic auth credentials for the add-on")
-	updateCmd.PersistentFlags().String("chain", "", "The chain for the installation to update")
-	updateCmd.PersistentFlags().String("network", "", "The network for the installation to update")
-	updateCmd.PersistentFlags().String("plan", "", "The plan for the installation to update")
-	updateCmd.PersistentFlags().String("quicknode-id", "", "The QuickNode ID for the account you want to update (optional)")
-	updateCmd.PersistentFlags().String("endpoint-id", "", "The endpoint ID for the endpoint you want to update (optional)")
+	updateCmd.PersistentFlags().StringP("url", "u", "", "The URL of the add-on's provision endpoint")
+
+	// Note: basic auth defaults to username = Aladdin and password = open sesame
+	updateCmd.PersistentFlags().String("basic-auth", "QWxhZGRpbjpvcGVuIHNlc2FtZQ==", "The basic auth credentials for the add-on. Defaults to username = Aladdin and password = open sesame")
+
+	updateCmd.PersistentFlags().StringP("quicknode-id", "q", uuid.NewV4().String(), "The QuickNode ID to provision the add-on for (optional)")
+	updateCmd.PersistentFlags().StringP("endpoint-id", "e", uuid.NewV4().String(), "The endpoint ID to provision the add-on for (optional)")
+	updateCmd.PersistentFlags().StringP("chain", "c", "ethereum", "The chain to provision the add-on for")
+	updateCmd.PersistentFlags().StringP("network", "n", "mainnet", "The network to provision the add-on for")
+	updateCmd.PersistentFlags().StringP("plan", "p", "discover", "The plan to provision the add-on for")
 }
