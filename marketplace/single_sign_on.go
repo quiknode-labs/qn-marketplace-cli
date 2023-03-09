@@ -22,7 +22,8 @@ func GetJWT(secretKey string, user User) (string, error) {
 	token := jwt.New(jwt.SigningMethodHS256)
 
 	claims := token.Claims.(jwt.MapClaims)
-	claims["exp"] = time.Now().Add(10 * time.Minute)
+	claims["iat"] = time.Now().Unix()
+	claims["exp"] = time.Now().Add(10 * time.Minute).Unix()
 	claims["name"] = user.Name
 	claims["email"] = user.Email
 	claims["organization_name"] = user.OrganizationName
