@@ -32,7 +32,8 @@ The tool will use the base-url you pass to it and append these to the base URL t
 `,
 	Args: cobra.OnlyValidArgs,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("*** PUDD ***\n\n")
+		header := color.New(color.FgWhite, color.BgGreen).SprintFunc()
+		fmt.Printf("%s\n\n", header("        PUDD        "))
 		baseUrl := cmd.Flag("base-url").Value.String()
 		if baseUrl == "" {
 			fmt.Print("Please provide a base URL for the provisioning API via the --base-url flag\n")

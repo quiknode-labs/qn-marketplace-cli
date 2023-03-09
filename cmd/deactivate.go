@@ -10,6 +10,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/fatih/color"
 	"github.com/quiknode-labs/qn-marketplace-cli/marketplace"
 	uuid "github.com/satori/go.uuid"
 	"github.com/spf13/cobra"
@@ -24,7 +25,8 @@ var deactivateCmd = &cobra.Command{
 Learn more at https://www.quicknode.com/guides/quicknode-products/marketplace/how-provisioning-works-for-marketplace-partners/`,
 	Args: cobra.OnlyValidArgs,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("*** DEACTIVATE ***\n\n")
+		header := color.New(color.FgWhite, color.BgGreen).SprintFunc()
+		fmt.Printf("%s\n\n", header("        DEACTIVATE        "))
 		url := cmd.Flag("url").Value.String()
 		if url == "" {
 			fmt.Print("Please provide a URL for the deactivate API via the --url flag\n")
@@ -38,7 +40,7 @@ Learn more at https://www.quicknode.com/guides/quicknode-products/marketplace/ho
 			DeactivateAt: time.Now().Format(time.RFC3339),
 		}
 
-		fmt.Printf("DELETE %s:\n", url)
+		color.Magenta("→ DELETE %s:\n", url)
 		requestJson, _ := json.MarshalIndent(request, "", "  ")
 		fmt.Printf("%s\n", requestJson)
 

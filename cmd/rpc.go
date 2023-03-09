@@ -23,7 +23,8 @@ var rpcCmd = &cobra.Command{
 	Short: "Allows you to test your add-on's RPC methods",
 	Args:  cobra.OnlyValidArgs,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("*** RPC ***\n\n")
+		header := color.New(color.FgWhite, color.BgGreen).SprintFunc()
+		fmt.Printf("%s\n\n", header("        RPC        "))
 		provisionURL := cmd.Flag("url").Value.String()
 		if provisionURL == "" {
 			fmt.Print("Please provide a URL for the provision API via the --url flag\n")

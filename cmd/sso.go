@@ -27,7 +27,8 @@ var ssoCmd = &cobra.Command{
 Learn more at https://www.quicknode.com/guides/quicknode-products/marketplace/how-sso-works-for-marketplace-partners/
 	`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("*** SSO ***\n\n")
+		header := color.New(color.FgWhite, color.BgGreen).SprintFunc()
+		fmt.Printf("%s\n\n", header("        SSO        "))
 
 		provisionURL := cmd.Flag("url").Value.String()
 		if provisionURL == "" {

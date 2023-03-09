@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/fatih/color"
 	"github.com/quiknode-labs/qn-marketplace-cli/marketplace"
 	uuid "github.com/satori/go.uuid"
 	"github.com/spf13/cobra"
@@ -23,7 +24,8 @@ var provisionCmd = &cobra.Command{
 Learn more at https://www.quicknode.com/guides/quicknode-products/marketplace/how-provisioning-works-for-marketplace-partners/`,
 	Args: cobra.OnlyValidArgs,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("*** PROVISION ***\n\n")
+		header := color.New(color.FgWhite, color.BgGreen).SprintFunc()
+		fmt.Printf("%s\n\n", header("        PROVISION        "))
 		url := cmd.Flag("url").Value.String()
 		if url == "" {
 			fmt.Print("Please provide a URL for the provision API via the --url flag\n")
@@ -41,7 +43,7 @@ Learn more at https://www.quicknode.com/guides/quicknode-products/marketplace/ho
 			ContractAddresses: []string{"0x4d224452801ACEd8B2F0aebE155379bb5D594381"},
 		}
 
-		fmt.Printf("POST %s:\n", url)
+		color.Magenta("→ POST %s:\n", url)
 		requestJson, _ := json.MarshalIndent(request, "", "  ")
 		fmt.Printf("%s\n", requestJson)
 
