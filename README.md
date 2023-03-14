@@ -67,16 +67,6 @@ It also has one command that allows you to test all four actions at once:
 qn-marketplace-cli pudd --base-url=http://localhost:3000/ --basic-auth=q24rqaergser --chain=ethereum --network=mainnet --plan=your-plan-slug
 ```
 
-### Single Sign On (SSO) Testing
-
-QuickNode Marketplace add-ons can provide a user-interface or dashboard that QuickNode customers can access from a link on their quicknode.com account. In order to seamlessly these customers from quicknode.com to Marketplace add-ons, an add-on can implement SSO. You can read [this guide](https://www.quicknode.com/guides/quicknode-products/marketplace/how-sso-works-for-marketplace-partners/) for more information on how SSO works with the QuickNode Marketplace.
-
-To test your SSO implementation, run this command:
-
-```sh
-qn-marketplace-cli sso --url=http://localhost:3000/dashboard --jwt-secret=your-secret
-```
-
 ### JSON-RPC Testing
 
 QuickNode Marketplace add-ons extends our capabilities by adding new JSON-RPC methods to QuickNode's existing endpoints.
