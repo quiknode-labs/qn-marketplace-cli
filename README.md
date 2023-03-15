@@ -26,6 +26,9 @@ To get more information about how to use the CLI, use the following command:
 qn-marketplace-cli help
 ```
 
+Please note that if you are debugging and want to see more information, you can use the `--verbose` flag for every command.
+
+
 ### PUDD Testing
 
 QuickNode Marketplace add-ons [must implement four provisioning API endpoints](https://www.quicknode.com/guides/quicknode-products/marketplace/how-provisioning-works-for-marketplace-partners/):
