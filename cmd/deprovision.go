@@ -25,8 +25,9 @@ var deprovisionCmd = &cobra.Command{
 Learn more at https://www.quicknode.com/guides/quicknode-products/marketplace/how-provisioning-works-for-marketplace-partners/`,
 	Args: cobra.OnlyValidArgs,
 	Run: func(cmd *cobra.Command, args []string) {
-		header := color.New(color.FgWhite, color.BgGreen).SprintFunc()
+		header := color.New(color.FgWhite, color.BgBlue).SprintFunc()
 		fmt.Printf("%s\n\n", header("        DEPROVISION        "))
+		verbose := cmd.Flag("verbose").Value.String() == "true"
 		url := cmd.Flag("url").Value.String()
 		if url == "" {
 			fmt.Print("Please provide a URL for the deprovision API via the --url flag\n")
@@ -41,17 +42,26 @@ Learn more at https://www.quicknode.com/guides/quicknode-products/marketplace/ho
 			DeprovisionAt: time.Now().Format(time.RFC3339),
 		}
 
-		color.Magenta("→ DELETE %s:\n", url)
+		if verbose {
+			color.Blue("→ DELETE %s:\n", url)
+		}
 		requestJson, _ := json.MarshalIndent(request, "", "  ")
-		fmt.Printf("%s\n", requestJson)
+		if verbose {
+			fmt.Printf("%s\n", requestJson)
+		}
 
 		response, err := marketplace.Deprovision(url, request, cmd.Flag("basic-auth").Value.String())
 		if err != nil {
 			color.Red("%s", err)
 			os.Exit(1)
 		}
-		fmt.Printf("\nDeprovision was successful:\n")
-		fmt.Printf("\tStatus: \t\t%s\n", response.Status)
+
+		if verbose {
+			fmt.Printf("\nDeprovision was successful:\n")
+			fmt.Printf("\tStatus: \t\t%s\n\n", response.Status)
+		}
+
+		color.Green("  ✓ Deprovision was successful")
 	},
 }
 

@@ -19,17 +19,26 @@ var healthcheckCmd = &cobra.Command{
 	Short: "Allows you to test your add-on's healthcheck implementation",
 	Args:  cobra.OnlyValidArgs,
 	Run: func(cmd *cobra.Command, args []string) {
-		header := color.New(color.FgWhite, color.BgGreen).SprintFunc()
+		header := color.New(color.FgWhite, color.BgBlue).SprintFunc()
 		fmt.Printf("%s\n\n", header("        Healthcheck        "))
-
+		verbose := cmd.Flag("verbose").Value.String() == "true"
 		url := cmd.Flag("url").Value.String()
-		response, err := marketplace.Healthcheck(url)
+
+		if verbose {
+			color.Blue("→ GET %s:\n", url)
+		}
+		statusCode, responseBody, err := marketplace.Healthcheck(url)
 		if err != nil {
 			color.Red("%s", err)
 			os.Exit(1)
 		}
 
-		color.Green("  ✓ Healthcheck was successful with HTTP response code: %d", response)
+		if verbose {
+			fmt.Println("\nResponse body:")
+			fmt.Printf("%s\n\n", responseBody)
+		}
+
+		color.Green("  ✓ Healthcheck was successful with HTTP response code: %d", statusCode)
 	},
 }
 

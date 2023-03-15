@@ -23,8 +23,9 @@ var rpcCmd = &cobra.Command{
 	Short: "Allows you to test your add-on's RPC methods",
 	Args:  cobra.OnlyValidArgs,
 	Run: func(cmd *cobra.Command, args []string) {
-		header := color.New(color.FgWhite, color.BgGreen).SprintFunc()
+		header := color.New(color.FgWhite, color.BgBlue).SprintFunc()
 		fmt.Printf("%s\n\n", header("        RPC        "))
+		verbose := cmd.Flag("verbose").Value.String() == "true"
 		provisionURL := cmd.Flag("url").Value.String()
 		if provisionURL == "" {
 			fmt.Print("Please provide a URL for the provision API via the --url flag\n")
@@ -56,19 +57,26 @@ var rpcCmd = &cobra.Command{
 			ContractAddresses: []string{"0x4d224452801ACEd8B2F0aebE155379bb5D594381"},
 		}
 
-		color.Magenta("→ POST %s:\n", provisionURL)
+		if verbose {
+			color.Blue("→ POST %s:\n", provisionURL)
+		}
 		requestJson, _ := json.MarshalIndent(request, "", "  ")
-		fmt.Printf("%s\n", requestJson)
+		if verbose {
+			fmt.Printf("%s\n", requestJson)
+		}
 
 		provisionResponse, err := marketplace.Provision(provisionURL, request, cmd.Flag("basic-auth").Value.String())
 		if err != nil {
 			color.Red("%s", err)
 			os.Exit(1)
 		}
-		fmt.Printf("\nProvision was successful:\n")
-		fmt.Printf("  Status:     %s\n", provisionResponse.Status)
-		fmt.Printf("  Dashboard URL:     %s\n", provisionResponse.DashboardURL)
-		fmt.Printf("  Access URL:     %s\n", provisionResponse.AccessURL)
+
+		if verbose {
+			fmt.Printf("\nProvision was successful:\n")
+			fmt.Printf("  Status:     %s\n", provisionResponse.Status)
+			fmt.Printf("  Dashboard URL:     %s\n", provisionResponse.DashboardURL)
+			fmt.Printf("  Access URL:     %s\n\n", provisionResponse.AccessURL)
+		}
 
 		// Now we can make the RPC call
 		// First, Create an RPC request object
@@ -104,8 +112,10 @@ var rpcCmd = &cobra.Command{
 			os.Exit(1)
 		}
 		// Create an HTTP request with the JSON-RPC request body
-		color.Magenta("\n→ POST %s:\n", cmd.Flag("rpc-url").Value.String())
-		fmt.Printf("%s\n", reqBodyIndented)
+		if verbose {
+			color.Blue("\n→ POST %s:\n", cmd.Flag("rpc-url").Value.String())
+			fmt.Printf("%s\n", reqBodyIndented)
+		}
 
 		httpReq, err := http.NewRequest("POST", cmd.Flag("rpc-url").Value.String(), bytes.NewBuffer(reqBody))
 		if err != nil {
@@ -137,10 +147,9 @@ var rpcCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		// Print the response body
-		fmt.Println("\nResponse body:")
+		color.Green("  ✓ RPC call was successful and returned:")
 		responseJson, _ := json.MarshalIndent(respBody, "", "  ")
-		color.Green("%s\n", responseJson)
+		color.White("\n%s\n", responseJson)
 	},
 }
 
