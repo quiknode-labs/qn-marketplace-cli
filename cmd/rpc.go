@@ -40,7 +40,7 @@ var rpcCmd = &cobra.Command{
 
 		rpcMethod := cmd.Flag("rpc-method").Value.String()
 		if rpcMethod == "" {
-			color.Red("Please provide an RPC Method for the provision API via the --url flag\n")
+			color.Red("Please provide an RPC Method for the provision API via the --rpc-method flag\n")
 			os.Exit(1)
 		}
 
