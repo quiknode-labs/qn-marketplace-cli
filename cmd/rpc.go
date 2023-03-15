@@ -129,6 +129,7 @@ var rpcCmd = &cobra.Command{
 		httpReq.Header.Set("X-INSTANCE-ID", cmd.Flag("endpoint-id").Value.String())
 		httpReq.Header.Set("X-QN-CHAIN", cmd.Flag("chain").Value.String())
 		httpReq.Header.Set("X-QN-NETWORK", cmd.Flag("network").Value.String())
+		httpReq.Header.Add("X-QN-TESTING", "true")
 
 		// Send the HTTP request and capture the response
 		client := http.Client{}
