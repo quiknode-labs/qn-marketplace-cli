@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 	"os/exec"
 	"runtime"
@@ -30,6 +31,7 @@ Learn more at https://www.quicknode.com/guides/quicknode-products/marketplace/ho
 		header := color.New(color.FgWhite, color.BgBlue).SprintFunc()
 		fmt.Printf("%s\n\n", header("        SSO        "))
 		verbose := cmd.Flag("verbose").Value.String() == "true"
+		withBrowser := cmd.Flag("with-browser").Value.String() == "true"
 		provisionURL := cmd.Flag("url").Value.String()
 		if provisionURL == "" {
 			fmt.Print("Please provide a URL for the provision API via the --url flag\n")
@@ -99,10 +101,32 @@ Learn more at https://www.quicknode.com/guides/quicknode-products/marketplace/ho
 			fmt.Printf("JWT Token: %s\n\n", jwtToken)
 		}
 
-		color.Yellow("  ✓ SSO attempt was completed. Please check your browser to make sure you are logged in to the dashboard.\n")
+		dashboardUrl := fmt.Sprintf("%s?jwt=%s", dashboardURL, jwtToken)
 
-		// # Open the browser
-		openbrowser(fmt.Sprintf("%s?jwt=%s", dashboardURL, jwtToken))
+		if withBrowser {
+			color.Yellow("  ✓ SSO attempt was completed. Please check your browser to make sure you are logged in to the dashboard.\n")
+
+			// # Open the browser
+			openbrowser(dashboardUrl)
+		} else {
+			statusCode, responseBody, err := marketplace.OpenDashboard(dashboardUrl)
+			if err != nil {
+				color.Red("  x Could not open dashboard: %s", err)
+				os.Exit(1)
+			}
+			if statusCode != http.StatusOK {
+				color.Red("  x Could not open dashboard: status code = %d\n\n", statusCode)
+				os.Exit(1)
+			} else {
+				if verbose {
+					fmt.Printf("Status Code: %d\nResponse Body:\n", statusCode)
+					fmt.Printf(responseBody)
+					fmt.Printf("\n")
+				}
+				color.Green("  ✓ SSO was successful.")
+			}
+
+		}
 	},
 }
 
@@ -124,6 +148,8 @@ func init() {
 	ssoCmd.PersistentFlags().String("name", "", "The name of the user trying to SSO into the add-on")
 	ssoCmd.PersistentFlags().String("email", "", "The email of the user trying to SSO into the add-on")
 	ssoCmd.PersistentFlags().String("org", "", "The organization name for the user trying to SSO into the add-on")
+
+	ssoCmd.PersistentFlags().Bool("with-browser", false, "Open the dashboard (with SSO) in browser instead of making a headless GET request")
 }
 
 func openbrowser(url string) {
