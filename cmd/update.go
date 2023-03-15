@@ -24,8 +24,9 @@ var updateCmd = &cobra.Command{
 Learn more at https://www.quicknode.com/guides/quicknode-products/marketplace/how-provisioning-works-for-marketplace-partners/`,
 	Args: cobra.OnlyValidArgs,
 	Run: func(cmd *cobra.Command, args []string) {
-		header := color.New(color.FgWhite, color.BgGreen).SprintFunc()
+		header := color.New(color.FgWhite, color.BgBlue).SprintFunc()
 		fmt.Printf("%s\n\n", header("        UPDATE        "))
+		verbose := cmd.Flag("verbose").Value.String() == "true"
 		url := cmd.Flag("url").Value.String()
 		if url == "" {
 			fmt.Print("Please provide a URL for the update API via the --url flag\n")
@@ -44,17 +45,26 @@ Learn more at https://www.quicknode.com/guides/quicknode-products/marketplace/ho
 			ContractAddresses: []string{"0x4d224452801ACEd8B2F0aebE155379bb5D594381"},
 		}
 
-		color.Magenta("→ PUT %s:\n", url)
+		if verbose {
+			color.Blue("→ PUT %s:\n", url)
+		}
 		requestJson, _ := json.MarshalIndent(request, "", "  ")
-		fmt.Printf("%s\n", requestJson)
+		if verbose {
+			fmt.Printf("%s\n", requestJson)
+		}
 
 		response, err := marketplace.Update(url, request, cmd.Flag("basic-auth").Value.String())
 		if err != nil {
 			color.Red("%s", err)
 			os.Exit(1)
 		}
-		fmt.Printf("\nUpdate was successful:\n")
-		fmt.Printf("  Status:     %s\n", response.Status)
+
+		if verbose {
+			fmt.Printf("\nUpdate was successful:\n")
+			fmt.Printf("  Status:     %s\n\n", response.Status)
+		}
+
+		color.Green("  ✓ Update was successful")
 	},
 }
 

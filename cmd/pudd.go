@@ -32,8 +32,9 @@ The tool will use the base-url you pass to it and append these to the base URL t
 `,
 	Args: cobra.OnlyValidArgs,
 	Run: func(cmd *cobra.Command, args []string) {
-		header := color.New(color.FgWhite, color.BgGreen).SprintFunc()
+		header := color.New(color.FgWhite, color.BgBlue).SprintFunc()
 		fmt.Printf("%s\n\n", header("        PUDD        "))
+		verbose := cmd.Flag("verbose").Value.String() == "true"
 		baseUrl := cmd.Flag("base-url").Value.String()
 		if baseUrl == "" {
 			fmt.Print("Please provide a base URL for the provisioning API via the --base-url flag\n")
@@ -54,36 +55,54 @@ The tool will use the base-url you pass to it and append these to the base URL t
 		}
 
 		provisionUrl := baseUrl + "/provision"
-		color.Magenta("→ POST %s:\n", provisionUrl)
+		if verbose {
+			color.Blue("→ POST %s:\n", provisionUrl)
+		}
 		requestJson, _ := json.MarshalIndent(request, "", "  ")
-		fmt.Printf("%s\n", requestJson)
+		if verbose {
+			fmt.Printf("%s\n", requestJson)
+		}
 
 		provisionResponse, err := marketplace.Provision(provisionUrl, request, cmd.Flag("basic-auth").Value.String())
 		if err != nil {
 			color.Red("%s", err)
 			os.Exit(1)
 		}
-		fmt.Printf("\nProvision was successful:\n")
-		fmt.Printf("  Status:     %s\n", provisionResponse.Status)
-		fmt.Printf("  Dashboard URL:     %s\n", provisionResponse.DashboardURL)
-		fmt.Printf("  Access URL:     %s\n", provisionResponse.AccessURL)
+
+		if verbose {
+			fmt.Printf("\nProvision was successful:\n")
+			fmt.Printf("  Status:     %s\n", provisionResponse.Status)
+			fmt.Printf("  Dashboard URL:     %s\n", provisionResponse.DashboardURL)
+			fmt.Printf("  Access URL:     %s\n\n", provisionResponse.AccessURL)
+		}
+
+		color.Green("  ✓ Provision #1 was successful")
 
 		// Then Provision again to test for idempotent provisions
-		color.Magenta("\n\n→ POST %s (again to test idempotent provisions):\n", provisionUrl)
-		fmt.Printf("%s\n", requestJson)
+		if verbose {
+			color.Blue("\n\n→ POST %s (again to test idempotent provisions):\n", provisionUrl)
+			fmt.Printf("%s\n", requestJson)
+		}
 		provisionResponseTwo, err := marketplace.Provision(provisionUrl, request, cmd.Flag("basic-auth").Value.String())
 		if err != nil {
 			color.Red("%s", err)
 			os.Exit(1)
 		}
-		fmt.Printf("\nSecond Provision was successful:\n")
-		fmt.Printf("  Status:     %s\n", provisionResponseTwo.Status)
-		fmt.Printf("  Dashboard URL:     %s\n", provisionResponseTwo.DashboardURL)
-		fmt.Printf("  Access URL:     %s\n", provisionResponseTwo.AccessURL)
+
+		if verbose {
+			fmt.Printf("\nSecond Provision was successful:\n")
+			fmt.Printf("  Status:     %s\n", provisionResponseTwo.Status)
+			fmt.Printf("  Dashboard URL:     %s\n", provisionResponseTwo.DashboardURL)
+			fmt.Printf("  Access URL:     %s\n\n", provisionResponseTwo.AccessURL)
+		}
+
+		color.Green("  ✓ Provision #2 was successful")
 
 		// Now, let's Update
 		updateUrl := baseUrl + "/update"
-		color.Magenta("\n\n→ PUT %s:\n", updateUrl)
+		if verbose {
+			color.Blue("\n\n→ PUT %s:\n", updateUrl)
+		}
 
 		updateRequest := marketplace.UpdateRequest{
 			QuickNodeId:       cmd.Flag("quicknode-id").Value.String(),
@@ -98,19 +117,27 @@ The tool will use the base-url you pass to it and append these to the base URL t
 		}
 
 		updateRequestJson, _ := json.MarshalIndent(updateRequest, "", "  ")
-		fmt.Printf("%s\n", updateRequestJson)
+		if verbose {
+			fmt.Printf("%s\n", updateRequestJson)
+		}
 
 		updateResponse, err := marketplace.Update(updateUrl, updateRequest, cmd.Flag("basic-auth").Value.String())
 		if err != nil {
 			color.Red("%s", err)
 			os.Exit(1)
 		}
-		fmt.Printf("\nUpdate was successful:\n")
-		fmt.Printf("  Status:     %s\n", updateResponse.Status)
+		if verbose {
+			fmt.Printf("\nUpdate was successful:\n")
+			fmt.Printf("  Status:     %s\n\n", updateResponse.Status)
+		}
+
+		color.Green("  ✓ Update was successful")
 
 		// Let's deactivate the endpoint
 		deactivateUrl := baseUrl + "/deactivate_endpoint"
-		color.Magenta("\n\n→ DELETE %s:\n", deactivateUrl)
+		if verbose {
+			color.Blue("\n\n→ DELETE %s:\n", deactivateUrl)
+		}
 		deactivateRequest := marketplace.DeactivateRequest{
 			QuickNodeId:  cmd.Flag("quicknode-id").Value.String(),
 			EndpointId:   cmd.Flag("endpoint-id").Value.String(),
@@ -120,15 +147,21 @@ The tool will use the base-url you pass to it and append these to the base URL t
 		}
 
 		deactivateRequestJson, _ := json.MarshalIndent(deactivateRequest, "", "  ")
-		fmt.Printf("%s\n", deactivateRequestJson)
+		if verbose {
+			fmt.Printf("%s\n", deactivateRequestJson)
+		}
 
 		deactivateResponse, err := marketplace.Deactivate(deactivateUrl, deactivateRequest, cmd.Flag("basic-auth").Value.String())
 		if err != nil {
 			color.Red("%s", err)
 			os.Exit(1)
 		}
-		fmt.Printf("\nDeactivate Endpoint was successful:\n")
-		fmt.Printf("  Status:     %s\n", deactivateResponse.Status)
+		if verbose {
+			fmt.Printf("\nDeactivate Endpoint was successful:\n")
+			fmt.Printf("  Status:     %s\n\n", deactivateResponse.Status)
+		}
+
+		color.Green("  ✓ Deactivate Endpoint was successful")
 
 		// Finally, deprovision
 		deprovisionUrl := baseUrl + "/deprovision"
@@ -140,17 +173,25 @@ The tool will use the base-url you pass to it and append these to the base URL t
 			DeprovisionAt: time.Now().Format(time.RFC3339),
 		}
 
-		color.Magenta("\n\n→ DELETE %s:\n", deprovisionUrl)
+		if verbose {
+			color.Blue("\n\n→ DELETE %s:\n", deprovisionUrl)
+		}
 		deprovisionRequestJson, _ := json.MarshalIndent(deprovisionRequest, "", "  ")
-		fmt.Printf("%s\n", deprovisionRequestJson)
+		if verbose {
+			fmt.Printf("%s\n", deprovisionRequestJson)
+		}
 
 		deprovisionResponse, err := marketplace.Deprovision(deprovisionUrl, deprovisionRequest, cmd.Flag("basic-auth").Value.String())
 		if err != nil {
 			color.Red("%s", err)
 			os.Exit(1)
 		}
-		fmt.Printf("\nDeprovision was successful:\n")
-		fmt.Printf("\tStatus: \t\t%s\n", deprovisionResponse.Status)
+		if verbose {
+			fmt.Printf("\nDeprovision was successful:\n")
+			fmt.Printf("\tStatus: \t\t%s\n\n", deprovisionResponse.Status)
+		}
+
+		color.Green("  ✓ Deprovision was successful")
 	},
 }
 

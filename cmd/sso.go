@@ -27,9 +27,9 @@ var ssoCmd = &cobra.Command{
 Learn more at https://www.quicknode.com/guides/quicknode-products/marketplace/how-sso-works-for-marketplace-partners/
 	`,
 	Run: func(cmd *cobra.Command, args []string) {
-		header := color.New(color.FgWhite, color.BgGreen).SprintFunc()
+		header := color.New(color.FgWhite, color.BgBlue).SprintFunc()
 		fmt.Printf("%s\n\n", header("        SSO        "))
-
+		verbose := cmd.Flag("verbose").Value.String() == "true"
 		provisionURL := cmd.Flag("url").Value.String()
 		if provisionURL == "" {
 			fmt.Print("Please provide a URL for the provision API via the --url flag\n")
@@ -48,19 +48,25 @@ Learn more at https://www.quicknode.com/guides/quicknode-products/marketplace/ho
 			ContractAddresses: []string{"0x4d224452801ACEd8B2F0aebE155379bb5D594381"},
 		}
 
-		color.Magenta("→ POST %s:\n", provisionURL)
+		if verbose {
+			color.Blue("→ POST %s:\n", provisionURL)
+		}
 		requestJson, _ := json.MarshalIndent(request, "", "  ")
-		fmt.Printf("%s\n", requestJson)
+		if verbose {
+			fmt.Printf("%s\n", requestJson)
+		}
 
 		provisionResponse, err := marketplace.Provision(provisionURL, request, cmd.Flag("basic-auth").Value.String())
 		if err != nil {
 			color.Red("%s", err)
 			os.Exit(1)
 		}
-		fmt.Printf("\nProvision was successful:\n")
-		fmt.Printf("  Status:     %s\n", provisionResponse.Status)
-		fmt.Printf("  Dashboard URL:     %s\n", provisionResponse.DashboardURL)
-		fmt.Printf("  Access URL:     %s\n", provisionResponse.AccessURL)
+		if verbose {
+			fmt.Printf("\nProvision was successful:\n")
+			fmt.Printf("  Status:     %s\n", provisionResponse.Status)
+			fmt.Printf("  Dashboard URL:     %s\n", provisionResponse.DashboardURL)
+			fmt.Printf("  Access URL:     %s\n\n", provisionResponse.AccessURL)
+		}
 
 		dashboardURL := provisionResponse.DashboardURL
 		if dashboardURL == "" {
@@ -74,9 +80,13 @@ Learn more at https://www.quicknode.com/guides/quicknode-products/marketplace/ho
 			Email:            cmd.Flag("email").Value.String(),
 			OrganizationName: cmd.Flag("org").Value.String(),
 		}
-		color.Magenta("\n\n→ SSO into %s:\n", dashboardURL)
+		if verbose {
+			color.Blue("\n\n→ SSO into %s:\n", dashboardURL)
+		}
 		userJson, _ := json.MarshalIndent(user, "", "  ")
-		fmt.Printf("%s\n", userJson)
+		if verbose {
+			fmt.Printf("%s\n", userJson)
+		}
 
 		jwtSecret := cmd.Flag("jwt-secret").Value.String()
 		jwtToken, err := marketplace.GetJWT(jwtSecret, user)
@@ -85,7 +95,11 @@ Learn more at https://www.quicknode.com/guides/quicknode-products/marketplace/ho
 			os.Exit(1)
 		}
 
-		fmt.Printf("JWT Token: %s", jwtToken)
+		if verbose {
+			fmt.Printf("JWT Token: %s\n\n", jwtToken)
+		}
+
+		color.Yellow("  ✓ SSO attempt was completed. Please check your browser to make sure you are logged in to the dashboard.\n")
 
 		// # Open the browser
 		openbrowser(fmt.Sprintf("%s?jwt=%s", dashboardURL, jwtToken))

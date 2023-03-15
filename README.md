@@ -26,6 +26,9 @@ To get more information about how to use the CLI, use the following command:
 qn-marketplace-cli help
 ```
 
+Please note that if you are debugging and want to see more information, you can use the `--verbose` flag for every command.
+
+
 ### PUDD Testing
 
 QuickNode Marketplace add-ons [must implement four provisioning API endpoints](https://www.quicknode.com/guides/quicknode-products/marketplace/how-provisioning-works-for-marketplace-partners/):
@@ -102,28 +105,58 @@ Then:
 bin/qn-marketplace-cli
 ```
 
-## Testing Locally
+## Testing on your localhost/development environment
 
-You can use the following commands to test locally if you have an application that is hosted at http://localhost:3005:
+You can use the following commands to test locally if you have an application that is hosted at http://localhost:3030.
+
+For example, if you are using our [qn-js-add-on](https://github.com/quiknode-labs/qn-js-add-on) repo, which is a
+sample add-on built with node.js, then you can use the following commands, assuming you have set the username and
+password to `username` and `password` respectively.
 
 ```sh
 go build
-./qn-marketplace-cli provision --url http://localhost:3005/provision --chain ethereum --network mainnet --plan test --quicknode-id foobar --endpoint-id bazbaz
-./qn-marketplace-cli update --url http://localhost:3005/update --chain ethereum --network mainnet --plan test --quicknode-id foobar --endpoint-id bazbaz
-./qn-marketplace-cli deactivate --url http://localhost:3005/deactivate_endpoint  --quicknode-id foobar --endpoint-id bazbaz --chain ethereum --network mainnet
-./qn-marketplace-cli deprovision --url http://localhost:3005/deprovision  --quicknode-id foobar --endpoint-id bazbaz --chain ethereum --network mainnet
 ```
 
-### For SSO:
+### Testing Provisioning
+
+You can test the 4 provision actions:
+
+```sh
+./qn-marketplace-cli provision --url http://localhost:3030/provisioning/provision --chain ethereum --network mainnet --plan test --quicknode-id foobar --endpoint-id bazbaz --basic-auth dXNlcm5hbWU6cGFzc3dvcmQ=
+
+./qn-marketplace-cli update --url http://localhost:3030/provisioning/update --chain ethereum --network mainnet --plan test --quicknode-id foobar --endpoint-id bazbaz --basic-auth dXNlcm5hbWU6cGFzc3dvcmQ=
+
+./qn-marketplace-cli deactivate --url http://localhost:3030/provisioning/deactivate_endpoint  --quicknode-id foobar --endpoint-id bazbaz --chain ethereum --network mainnet --basic-auth dXNlcm5hbWU6cGFzc3dvcmQ=
+
+./qn-marketplace-cli deprovision --url http://localhost:3030/provisioning/deprovision  --quicknode-id foobar --endpoint-id bazbaz --chain ethereum --network mainnet --basic-auth dXNlcm5hbWU6cGFzc3dvcmQ=
+ ```
+
+ Or you can test them all at once with PUDD:
+
+ ```sh
+ ./qn-marketplace-cli pudd --base-url http://localhost:3030/provisioning  --quicknode-id foobar --endpoint-id bazbaz --chain ethereum --network mainnet --basic-auth dXNlcm5hbWU6cGFzc3dvcmQ=
+ ```
+
+### Testing Single Sign On (SSO)
+
+QuickNode Marketplace add-ons can provide a user-interface or dashboard that QuickNode customers can access from a link on their quicknode.com account. In order to seamlessly these customers from quicknode.com to Marketplace add-ons, an add-on can implement SSO. You can read [this guide](https://www.quicknode.com/guides/quicknode-products/marketplace/how-sso-works-for-marketplace-partners/) for more information on how SSO works with the QuickNode Marketplace.
+
 
 Provide the provision url which should return a `dashboard-url` in the response. This will open a browser pointing to the dashboard url with the provisioned information.
 
-```sh
-./qn-marketplace-cli sso --url http://localhost:3005/provision --email luc@example.com --name Luc --org QN --jwt-secret jwt-secret
-```
+ ```sh
+ ./qn-marketplace-cli sso --url http://localhost:3030/provisioning/provision --email luc@example.com --name Luc --org QN --jwt-secret jwt-secret --basic-auth dXNlcm5hbWU6cGFzc3dvcmQ=
+ ```
 
-### FOR RPC:
 
-```sh
-./qn-marketplace-cli rpc --url http://localhost:3005/provision --rpc-url http://localhost:3005/rpc --rpc-method qn_fetchStuff --rpc-params "[\"abc\",123,\"zoo\"]"
-```
+### Testing RPC calls
+
+  ```sh
+ ./qn-marketplace-cli rpc --url http://localhost:3030/provisioning/provision --rpc-url http://localhost:3030/rpc --rpc-method qn_fetchStuff --rpc-params "[\"abc\",123,\"zoo\"]" --basic-auth dXNlcm5hbWU6cGFzc3dvcmQ=
+ ```
+
+ ### Testing Healthcheck URL
+
+  ```sh
+ ./qn-marketplace-cli healthcheck --url http://localhost:3030/healthcheck
+ ```
