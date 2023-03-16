@@ -109,7 +109,7 @@ bin/qn-marketplace-cli
 
 You can use the following commands to test locally if you have an application that is hosted at http://localhost:3030.
 
-For example, if you are using our [  ✘ marketplace-starter-js](https://github.com/quiknode-labs/  ✘ marketplace-starter-js) repo, which is a
+For example, if you are using our [marketplace-starter-js](https://github.com/quiknode-labs/marketplace-starter-js) repo, which is a
 sample add-on built with node.js, then you can use the following commands, assuming you have set the username and
 password to `username` and `password` respectively.
 
