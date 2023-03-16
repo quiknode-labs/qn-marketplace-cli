@@ -45,6 +45,17 @@ Learn more at https://www.quicknode.com/guides/quicknode-products/marketplace/ho
 			ContractAddresses: []string{"0x4d224452801ACEd8B2F0aebE155379bb5D594381"},
 		}
 
+		// Check that it is protected by basic auth
+		isProtectedByBasicAuth, err := marketplace.RequiresBasicAuth(url, "PUT")
+		if err != nil {
+			color.Red("%s", err)
+			os.Exit(1)
+		}
+		if !isProtectedByBasicAuth {
+			color.Red("  ✘ The update API is not protected by basic auth.")
+			os.Exit(1)
+		}
+
 		if verbose {
 			color.Blue("→ PUT %s:\n", url)
 		}
