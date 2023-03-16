@@ -41,6 +41,17 @@ Learn more at https://www.quicknode.com/guides/quicknode-products/marketplace/ho
 			DeactivateAt: time.Now().Format(time.RFC3339),
 		}
 
+		// Check that it is protected by basic auth
+		isProtectedByBasicAuth, err := marketplace.RequiresBasicAuth(url, "DELETE")
+		if err != nil {
+			color.Red("%s", err)
+			os.Exit(1)
+		}
+		if !isProtectedByBasicAuth {
+			color.Red("  ✘ The deactivate_endpoint API is not protected by basic auth.")
+			os.Exit(1)
+		}
+
 		if verbose {
 			color.Blue("→ DELETE %s:\n", url)
 		}

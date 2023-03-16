@@ -55,6 +55,20 @@ The tool will use the base-url you pass to it and append these to the base URL t
 		}
 
 		provisionUrl := baseUrl + "/provision"
+
+		// Check that it is protected by basic auth
+		isProtectedByBasicAuth, err := marketplace.RequiresBasicAuth(provisionUrl, "POST")
+		if err != nil {
+			color.Red("%s", err)
+			os.Exit(1)
+		}
+		if !isProtectedByBasicAuth {
+			color.Red("  ✘ The provision API is not protected by basic auth.")
+			os.Exit(1)
+		} else {
+			color.Green("  ✓ Provision API is protected by basic auth.")
+		}
+
 		if verbose {
 			color.Blue("→ POST %s:\n", provisionUrl)
 		}
@@ -116,6 +130,19 @@ The tool will use the base-url you pass to it and append these to the base URL t
 			ContractAddresses: []string{"0x4d224452801ACEd8B2F0aebE155379bb5D594381"},
 		}
 
+		// Check that it is protected by basic auth
+		updateIsProtectedByBasicAuth, err := marketplace.RequiresBasicAuth(updateUrl, "PUT")
+		if err != nil {
+			color.Red("%s", err)
+			os.Exit(1)
+		}
+		if !updateIsProtectedByBasicAuth {
+			color.Red("  ✘ The update API is not protected by basic auth.")
+			os.Exit(1)
+		} else {
+			color.Green("  ✓ Update API is protected by basic auth.")
+		}
+
 		updateRequestJson, _ := json.MarshalIndent(updateRequest, "", "  ")
 		if verbose {
 			fmt.Printf("%s\n", updateRequestJson)
@@ -146,6 +173,19 @@ The tool will use the base-url you pass to it and append these to the base URL t
 			DeactivateAt: time.Now().Format(time.RFC3339),
 		}
 
+		// Check that it is protected by basic auth
+		deactivateIsProtectedByBasicAuth, err := marketplace.RequiresBasicAuth(deactivateUrl, "DELETE")
+		if err != nil {
+			color.Red("%s", err)
+			os.Exit(1)
+		}
+		if !deactivateIsProtectedByBasicAuth {
+			color.Red("  ✘ The deactivate_endpoint API is not protected by basic auth.")
+			os.Exit(1)
+		} else {
+			color.Green("  ✓ Deactivate Endpoint API is protected by basic auth.")
+		}
+
 		deactivateRequestJson, _ := json.MarshalIndent(deactivateRequest, "", "  ")
 		if verbose {
 			fmt.Printf("%s\n", deactivateRequestJson)
@@ -171,6 +211,19 @@ The tool will use the base-url you pass to it and append these to the base URL t
 			Chain:         cmd.Flag("chain").Value.String(),
 			Network:       cmd.Flag("network").Value.String(),
 			DeprovisionAt: time.Now().Format(time.RFC3339),
+		}
+
+		// Check that it is protected by basic auth
+		deprovisionIsProtectedByBasicAuth, err := marketplace.RequiresBasicAuth(deprovisionUrl, "DELETE")
+		if err != nil {
+			color.Red("%s", err)
+			os.Exit(1)
+		}
+		if !deprovisionIsProtectedByBasicAuth {
+			color.Red("  ✘ The deprovision API is not protected by basic auth.")
+			os.Exit(1)
+		} else {
+			color.Green("  ✓ Deprovision API is protected by basic auth.")
 		}
 
 		if verbose {

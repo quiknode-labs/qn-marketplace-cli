@@ -32,6 +32,7 @@ Learn more at https://www.quicknode.com/guides/quicknode-products/marketplace/ho
 			fmt.Print("Please provide a URL for the provision API via the --url flag\n")
 			os.Exit(1)
 		}
+
 		request := marketplace.ProvisionRequest{
 			QuickNodeId:       cmd.Flag("quicknode-id").Value.String(),
 			EndpointId:        cmd.Flag("endpoint-id").Value.String(),
@@ -42,6 +43,17 @@ Learn more at https://www.quicknode.com/guides/quicknode-products/marketplace/ho
 			HTTPURL:           "https://long-late-firefly.quiknode.pro/4bb1e6b2dec8294938b6fdfdb7cf0cf70c4e97a2/",
 			Referers:          []string{"https://quicknode.com"},
 			ContractAddresses: []string{"0x4d224452801ACEd8B2F0aebE155379bb5D594381"},
+		}
+
+		// Check that it is protected by basic auth
+		isProtectedByBasicAuth, err := marketplace.RequiresBasicAuth(url, "POST")
+		if err != nil {
+			color.Red("%s", err)
+			os.Exit(1)
+		}
+		if !isProtectedByBasicAuth {
+			color.Red("  ✘ The provision API is not protected by basic auth.")
+			os.Exit(1)
 		}
 
 		if verbose {

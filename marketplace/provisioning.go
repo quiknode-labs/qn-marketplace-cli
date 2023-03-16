@@ -66,6 +66,38 @@ type DeprovisionResponse struct {
 	Status string `json:"status"`
 }
 
+func RequiresBasicAuth(url string, httpMethod string) (bool, error) {
+	client := &http.Client{}
+
+	payload := ProvisionRequest{}
+
+	// Convert the payload to JSON
+	payloadBuf := new(bytes.Buffer)
+	json.NewEncoder(payloadBuf).Encode(payload)
+
+	// Create the HTTP request
+	req, err := http.NewRequest(httpMethod, url, payloadBuf)
+	if err != nil {
+		fmt.Println(err)
+		return false, err
+	}
+	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("X-QN-TESTING", "true")
+
+	res, err := client.Do(req)
+	if err != nil {
+		fmt.Println(err)
+		return false, err
+	}
+	defer res.Body.Close()
+
+	if res.StatusCode == http.StatusUnauthorized {
+		return true, nil
+	} else {
+		return false, nil
+	}
+}
+
 func Provision(url string, payload ProvisionRequest, basicAuth string) (ProvisionResponse, error) {
 	client := &http.Client{}
 

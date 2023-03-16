@@ -111,11 +111,11 @@ Learn more at https://www.quicknode.com/guides/quicknode-products/marketplace/ho
 		} else {
 			statusCode, responseBody, err := marketplace.OpenDashboard(dashboardUrl)
 			if err != nil {
-				color.Red("  x Could not open dashboard: %s", err)
+				color.Red("  ✘ Could not open dashboard: %s", err)
 				os.Exit(1)
 			}
 			if statusCode != http.StatusOK {
-				color.Red("  x Could not open dashboard: status code = %d\n\n", statusCode)
+				color.Red("  ✘ Could not open dashboard: status code = %d\n\n", statusCode)
 				os.Exit(1)
 			} else {
 				if verbose {
