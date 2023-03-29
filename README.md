@@ -109,7 +109,7 @@ bin/qn-marketplace-cli
 
 You can use the following commands to test locally if you have an application that is hosted at http://localhost:3030.
 
-For example, if you are using our [qn-js-add-on](https://github.com/quiknode-labs/qn-js-add-on) repo, which is a
+For example, if you are using our [marketplace-starter-js](https://github.com/quiknode-labs/marketplace-starter-js) repo, which is a
 sample add-on built with node.js, then you can use the following commands, assuming you have set the username and
 password to `username` and `password` respectively.
 
@@ -160,3 +160,14 @@ Provide the provision url which should return a `dashboard-url` in the response.
   ```sh
  ./qn-marketplace-cli healthcheck --url http://localhost:3030/healthcheck
  ```
+
+## Integrating into your CI workflows
+
+You can easily integrate `qn-marketplace-cli` into your CI workflows so that your add-on
+is automatically tested by the CLI on every new pull request.
+
+To see how to accomplish this, check out our [Github Workflow for marketplace-starter-go](https://github.com/quiknode-labs/marketplace-starter-go/blob/main/.github/workflows/ci.yml)
+
+## License
+
+MIT
