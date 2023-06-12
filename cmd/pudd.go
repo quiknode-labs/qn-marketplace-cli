@@ -1,6 +1,5 @@
 /*
 Copyright © 2023 QuickNode, Inc.
-
 */
 package cmd
 
@@ -170,7 +169,7 @@ The tool will use the base-url you pass to it and append these to the base URL t
 			EndpointId:   cmd.Flag("endpoint-id").Value.String(),
 			Chain:        cmd.Flag("chain").Value.String(),
 			Network:      cmd.Flag("network").Value.String(),
-			DeactivateAt: time.Now().Format(time.RFC3339),
+			DeactivateAt: time.Now().Unix(),
 		}
 
 		// Check that it is protected by basic auth
@@ -210,7 +209,7 @@ The tool will use the base-url you pass to it and append these to the base URL t
 			EndpointId:    cmd.Flag("endpoint-id").Value.String(),
 			Chain:         cmd.Flag("chain").Value.String(),
 			Network:       cmd.Flag("network").Value.String(),
-			DeprovisionAt: time.Now().Format(time.RFC3339),
+			DeprovisionAt: time.Now().Unix(),
 		}
 
 		// Check that it is protected by basic auth

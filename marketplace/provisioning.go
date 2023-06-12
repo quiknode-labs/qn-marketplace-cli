@@ -47,7 +47,7 @@ type DeactivateRequest struct {
 	EndpointId   string `json:"endpoint-id"`
 	Chain        string `json:"chain"`
 	Network      string `json:"network"`
-	DeactivateAt string `json:"deactivate-at"`
+	DeactivateAt int64  `json:"deactivate-at"`
 }
 
 type DeactivateResponse struct {
@@ -59,7 +59,7 @@ type DeprovisionRequest struct {
 	EndpointId    string `json:"endpoint-id"`
 	Chain         string `json:"chain"`
 	Network       string `json:"network"`
-	DeprovisionAt string `json:"deprovision-at"`
+	DeprovisionAt int64  `json:"deprovision-at"`
 }
 
 type DeprovisionResponse struct {
