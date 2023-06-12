@@ -1,6 +1,5 @@
 /*
 Copyright © 2023 QuickNode, Inc.
-
 */
 package cmd
 
@@ -39,7 +38,7 @@ Learn more at https://www.quicknode.com/guides/quicknode-products/marketplace/ho
 			EndpointId:    cmd.Flag("endpoint-id").Value.String(),
 			Chain:         cmd.Flag("chain").Value.String(),
 			Network:       cmd.Flag("network").Value.String(),
-			DeprovisionAt: time.Now().Format(time.RFC3339),
+			DeprovisionAt: time.Now().Unix(),
 		}
 
 		// Check that it is protected by basic auth
