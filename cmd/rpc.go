@@ -1,6 +1,5 @@
 /*
 Copyright © 2023 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
@@ -147,8 +146,13 @@ var rpcCmd = &cobra.Command{
 			color.Red("Error decoding JSON:", err)
 			os.Exit(1)
 		}
+		if resp.StatusCode == 200 {
+			color.Green("  ✓ RPC call was successful and returned:")
 
-		color.Green("  ✓ RPC call was successful and returned:")
+		} else {
+			color.Red("  ✘ RPC call failed:     %s\n\n", resp.Status)
+		}
+
 		responseJson, _ := json.MarshalIndent(respBody, "", "  ")
 		color.White("\n%s\n", responseJson)
 	},
