@@ -146,15 +146,16 @@ var rpcCmd = &cobra.Command{
 			color.Red("Error decoding JSON:", err)
 			os.Exit(1)
 		}
-		if resp.StatusCode == 200 {
-			color.Green("  ✓ RPC call was successful and returned:")
-
-		} else {
-			color.Red("  ✘ RPC call failed:     %s\n\n", resp.Status)
-		}
 
 		responseJson, _ := json.MarshalIndent(respBody, "", "  ")
-		color.White("\n%s\n", responseJson)
+		if resp.StatusCode == 200 {
+			color.Green("  ✓ RPC call was successful and returned:")
+			color.White("\n%s\n", responseJson)
+		} else {
+			color.Red("  ✘ RPC call failed:     %s\n\n", resp.Status)
+			color.White("\n%s\n", responseJson)
+			os.Exit(1)
+		}
 	},
 }
 
