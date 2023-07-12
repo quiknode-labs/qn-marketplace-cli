@@ -1,6 +1,5 @@
 /*
 Copyright © 2023 NAME HERE <EMAIL ADDRESS>
-
 */
 package cmd
 
@@ -148,9 +147,15 @@ var rpcCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		color.Green("  ✓ RPC call was successful and returned:")
 		responseJson, _ := json.MarshalIndent(respBody, "", "  ")
-		color.White("\n%s\n", responseJson)
+		if resp.StatusCode == 200 {
+			color.Green("  ✓ RPC call was successful and returned:")
+			color.White("\n%s\n", responseJson)
+		} else {
+			color.Red("  ✘ RPC call failed:     %s\n\n", resp.Status)
+			color.White("\n%s\n", responseJson)
+			os.Exit(1)
+		}
 	},
 }
 
