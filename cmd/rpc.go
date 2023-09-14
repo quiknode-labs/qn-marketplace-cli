@@ -169,6 +169,7 @@ func init() {
 
 	rpcCmd.PersistentFlags().StringP("quicknode-id", "q", uuid.NewV4().String(), "The QuickNode ID to provision the add-on for (optional)")
 	rpcCmd.PersistentFlags().StringP("endpoint-id", "e", uuid.NewV4().String(), "The endpoint ID to provision the add-on for (optional)")
+	rpcCmd.PersistentFlags().StringP("endpoint-url", "l", "https://long-late-firefly.quiknode.pro/4bb1e6b2dec8294938b6fdfdb7cf0cf70c4e97a2/", "The endpoint URL to provision the add-on for (optional - defaults to an ethereum mainnet endpoint")
 	rpcCmd.PersistentFlags().StringP("chain", "c", "ethereum", "The chain to provision the add-on for")
 	rpcCmd.PersistentFlags().StringP("network", "n", "mainnet", "The network to provision the add-on for")
 	rpcCmd.PersistentFlags().StringP("plan", "p", "discover", "The plan to provision the add-on for")
