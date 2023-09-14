@@ -48,7 +48,7 @@ The tool will use the base-url you pass to it and append these to the base URL t
 			Network:           cmd.Flag("network").Value.String(),
 			Plan:              cmd.Flag("plan").Value.String(),
 			WSSURL:            "wss://long-late-firefly.quiknode.pro/4bb1e6b2dec8294938b6fdfdb7cf0cf70c4e97a2/",
-			HTTPURL:           "https://long-late-firefly.quiknode.pro/4bb1e6b2dec8294938b6fdfdb7cf0cf70c4e97a2/",
+			HTTPURL:           cmd.Flag("endpoint-url").Value.String(),
 			Referers:          []string{"https://quicknode.com"},
 			ContractAddresses: []string{"0x4d224452801ACEd8B2F0aebE155379bb5D594381"},
 		}
@@ -124,7 +124,7 @@ The tool will use the base-url you pass to it and append these to the base URL t
 			Network:           cmd.Flag("network").Value.String(),
 			Plan:              cmd.Flag("plan").Value.String(),
 			WSSURL:            "wss://long-late-firefly.quiknode.pro/4bb1e6b2dec8294938b6fdfdb7cf0cf70c4e97a2/",
-			HTTPURL:           "https://long-late-firefly.quiknode.pro/4bb1e6b2dec8294938b6fdfdb7cf0cf70c4e97a2/",
+			HTTPURL:           cmd.Flag("endpoint-url").Value.String(),
 			Referers:          []string{"https://quicknode.com"},
 			ContractAddresses: []string{"0x4d224452801ACEd8B2F0aebE155379bb5D594381"},
 		}
@@ -207,8 +207,6 @@ The tool will use the base-url you pass to it and append these to the base URL t
 		deprovisionRequest := marketplace.DeprovisionRequest{
 			QuickNodeId:   cmd.Flag("quicknode-id").Value.String(),
 			EndpointId:    cmd.Flag("endpoint-id").Value.String(),
-			Chain:         cmd.Flag("chain").Value.String(),
-			Network:       cmd.Flag("network").Value.String(),
 			DeprovisionAt: time.Now().Unix(),
 		}
 
@@ -257,6 +255,7 @@ func init() {
 
 	puddCmd.PersistentFlags().StringP("quicknode-id", "q", uuid.NewV4().String(), "The QuickNode ID to provision the add-on for (optional)")
 	puddCmd.PersistentFlags().StringP("endpoint-id", "e", uuid.NewV4().String(), "The endpoint ID to provision the add-on for (optional)")
+	puddCmd.PersistentFlags().StringP("endpoint-url", "l", "https://long-late-firefly.quiknode.pro/4bb1e6b2dec8294938b6fdfdb7cf0cf70c4e97a2/", "The endpoint URL to provision the add-on for (optional - defaults to an ethereum mainnet endpoint")
 	puddCmd.PersistentFlags().StringP("chain", "c", "ethereum", "The chain to provision the add-on for")
 	puddCmd.PersistentFlags().StringP("network", "n", "mainnet", "The network to provision the add-on for")
 	puddCmd.PersistentFlags().StringP("plan", "p", "discover", "The plan to provision the add-on for")
