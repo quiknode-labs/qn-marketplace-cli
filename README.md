@@ -43,13 +43,13 @@ The `qn-marketplace-cli` has 4 different commands that allows you to test each o
 PROVISION:
 
 ```sh
-qn-marketplace-cli provision --url=http://localhost:3000/provision --basic-auth=q24rqaergser --chain=ethereum --network=mainnet --plan=your-plan-slug --quicknode-id=abcdef --endpoint-id=foobar
+qn-marketplace-cli provision --url=http://localhost:3000/provision --basic-auth=q24rqaergser --chain=ethereum --network=mainnet --plan=your-plan-slug --quicknode-id=abcdef --endpoint-id=foobar --endpoint-url=https://long-late-firefly.quiknode.pro/4bb1e6b2dec8294938b6fdfdb7cf0cf70c4e97a2/
 ```
 
 UPDATE:
 
 ```sh
-qn-marketplace-cli update --url=http://localhost:3000/update --basic-auth=q24rqaergser --chain=ethereum --network=mainnet --plan=your-plan-slug --quicknode-id=abcdef --endpoint-id=foobar
+qn-marketplace-cli update --url=http://localhost:3000/update --basic-auth=q24rqaergser --chain=ethereum --network=mainnet --plan=your-plan-slug --quicknode-id=abcdef --endpoint-id=foobar --endpoint-url=https://long-late-firefly.quiknode.pro/4bb1e6b2dec8294938b6fdfdb7cf0cf70c4e97a2/
 ```
 
 DEACTIVATE ENDPOINT:
@@ -67,7 +67,7 @@ qn-marketplace-cli deprovision --url=http://localhost:3000/deprovision --basic-a
 It also has one command that allows you to test all four actions at once:
 
 ```sh
-qn-marketplace-cli pudd --base-url=http://localhost:3000/ --basic-auth=q24rqaergser --chain=ethereum --network=mainnet --plan=your-plan-slug
+qn-marketplace-cli pudd --base-url=http://localhost:3000/ --basic-auth=q24rqaergser --chain=ethereum --network=mainnet --plan=your-plan-slug --endpoint-url=https://long-late-firefly.quiknode.pro/4bb1e6b2dec8294938b6fdfdb7cf0cf70c4e97a2/
 ```
 
 ### JSON-RPC Testing
@@ -78,7 +78,7 @@ Please read [this guide](https://www.quicknode.com/guides/quicknode-products/mar
 If your add-on has RPC methods, the `qn-marketplace-cli` allows you to test your implementation by making some JSON-RPC calls to your application.
 
 ```sh
-qn-marketplace-cli rpc  --url=http://localhost:3000/rpc --method=your_addOnMethod --rpc-params='[9, "f"]' --chain=solana --network=mainnet
+qn-marketplace-cli rpc  --url=http://localhost:3000/rpc --method=your_addOnMethod --rpc-params='[9, "f"]' --chain=solana --network=mainnet --endpoint-url=https://long-late-firefly.quiknode.pro/4bb1e6b2dec8294938b6fdfdb7cf0cf70c4e97a2/
 ```
 
 ## Development
@@ -145,7 +145,7 @@ QuickNode Marketplace add-ons can provide a user-interface or dashboard that Qui
 Provide the provision url which should return a `dashboard-url` in the response. This will open a browser pointing to the dashboard url with the provisioned information.
 
  ```sh
- ./qn-marketplace-cli sso --url http://localhost:3030/provisioning/provision --email luc@example.com --name Luc --org QN --jwt-secret jwt-secret --basic-auth dXNlcm5hbWU6cGFzc3dvcmQ=
+ ./qn-marketplace-cli sso --url http://localhost:3030/provisioning/provision --email luc@example.com --name Luc --org QN --jwt-secret jwt-secret --basic-auth dXNlcm5hbWU6cGFzc3dvcmQ= --endpoint-url=https://long-late-firefly.quiknode.pro/4bb1e6b2dec8294938b6fdfdb7cf0cf70c4e97a2/
  ```
 
 
