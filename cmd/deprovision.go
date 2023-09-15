@@ -36,6 +36,8 @@ Learn more at https://www.quicknode.com/guides/quicknode-products/marketplace/ho
 		request := marketplace.DeprovisionRequest{
 			QuickNodeId:   cmd.Flag("quicknode-id").Value.String(),
 			EndpointId:    cmd.Flag("endpoint-id").Value.String(),
+			Chain:         cmd.Flag("chain").Value.String(),
+			Network:       cmd.Flag("network").Value.String(),
 			DeprovisionAt: time.Now().Unix(),
 		}
 
@@ -83,4 +85,6 @@ func init() {
 
 	deprovisionCmd.PersistentFlags().StringP("quicknode-id", "q", uuid.NewV4().String(), "The QuickNode ID to provision the add-on for (optional)")
 	deprovisionCmd.PersistentFlags().StringP("endpoint-id", "e", uuid.NewV4().String(), "The endpoint ID to provision the add-on for (optional)")
+	deprovisionCmd.PersistentFlags().StringP("chain", "c", "ethereum", "The chain to provision the add-on for")
+	deprovisionCmd.PersistentFlags().StringP("network", "n", "mainnet", "The network to provision the add-on for")
 }
