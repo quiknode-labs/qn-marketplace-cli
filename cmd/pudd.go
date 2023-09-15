@@ -207,6 +207,8 @@ The tool will use the base-url you pass to it and append these to the base URL t
 		deprovisionRequest := marketplace.DeprovisionRequest{
 			QuickNodeId:   cmd.Flag("quicknode-id").Value.String(),
 			EndpointId:    cmd.Flag("endpoint-id").Value.String(),
+			Chain:         cmd.Flag("chain").Value.String(),
+			Network:       cmd.Flag("network").Value.String(),
 			DeprovisionAt: time.Now().Unix(),
 		}
 
