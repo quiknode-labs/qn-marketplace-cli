@@ -23,7 +23,7 @@ var ssoCmd = &cobra.Command{
 	Use:   "sso",
 	Short: "Allows you to test your add-on's SSO implementation",
 	Long: `Use this command to make sure your add-on's SSO implementation is working as expected.
-	
+
 Learn more at https://www.quicknode.com/guides/quicknode-products/marketplace/how-sso-works-for-marketplace-partners/
 	`,
 	Run: func(cmd *cobra.Command, args []string) {
@@ -80,6 +80,7 @@ Learn more at https://www.quicknode.com/guides/quicknode-products/marketplace/ho
 			Name:             cmd.Flag("name").Value.String(),
 			Email:            cmd.Flag("email").Value.String(),
 			OrganizationName: cmd.Flag("org").Value.String(),
+			plan: 						cmd.Flag("plan").Value.String(),
 		}
 		if verbose {
 			color.Blue("\n\n→ SSO into %s:\n", dashboardURL)
@@ -90,6 +91,11 @@ Learn more at https://www.quicknode.com/guides/quicknode-products/marketplace/ho
 		}
 
 		jwtSecret := cmd.Flag("jwt-secret").Value.String()
+
+		if verbose {
+			fmt.Printf("\nProvision was successful:\n")
+			fmt.Printf("  jwtSecret:     %s\n", jwtSecret)
+		}
 		jwtToken, err := marketplace.GetJWT(jwtSecret, user)
 		if err != nil {
 			color.Red("Could not generate JWT: %s", err)

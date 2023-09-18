@@ -15,6 +15,7 @@ type User struct {
 	Email            string `json:"email"`
 	OrganizationName string `json:"organization_name"`
 	QuicknodeID      string `json:"quicknode-id"`
+	Plan      			 string `json:"plan"`
 }
 
 type JWTClaims struct {
