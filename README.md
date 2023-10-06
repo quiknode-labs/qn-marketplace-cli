@@ -90,7 +90,7 @@ We welcome contributions to this repository to help us improve the CLI.
 To fetch, build and install from the Github source:
 
 ```
-go install github.com/quicknode-labs/qn-marketplace-cli@latest
+go install github.com/quiknode-labs/qn-marketplace-cli@latest
 ```
 
 To build the project:
