@@ -81,9 +81,6 @@ Learn more at https://www.quicknode.com/guides/quicknode-products/marketplace/ho
 			Email:            cmd.Flag("email").Value.String(),
 			OrganizationName: cmd.Flag("org").Value.String(),
 		}
-		if verbose {
-			color.Blue("\n\n→ SSO into %s:\n", dashboardURL)
-		}
 		userJson, _ := json.MarshalIndent(user, "", "  ")
 		if verbose {
 			fmt.Printf("%s\n", userJson)
@@ -100,15 +97,15 @@ Learn more at https://www.quicknode.com/guides/quicknode-products/marketplace/ho
 			fmt.Printf("JWT Token: %s\n\n", jwtToken)
 		}
 
-		dashboardUrl := fmt.Sprintf("%s?jwt=%s", dashboardURL, jwtToken)
+		dashboardUrlWithJwtToken := fmt.Sprintf("%s?jwt=%s", dashboardURL, jwtToken)
 
 		if withBrowser {
 			color.Yellow("  ✓ SSO attempt was completed. Please check your browser to make sure you are logged in to the dashboard.\n")
 
 			// # Open the browser
-			openbrowser(dashboardUrl)
+			openbrowser(dashboardUrlWithJwtToken)
 		} else {
-			statusCode, responseBody, err := marketplace.OpenDashboard(dashboardUrl)
+			statusCode, responseBody, err := marketplace.OpenDashboard(dashboardUrlWithJwtToken)
 			if err != nil {
 				color.Red("  ✘ Could not open dashboard: %s", err)
 				os.Exit(1)
@@ -123,6 +120,7 @@ Learn more at https://www.quicknode.com/guides/quicknode-products/marketplace/ho
 					fmt.Printf("\n")
 				}
 				color.Green("  ✓ SSO was successful.")
+				color.Blue("  → SSO into %s:\n", dashboardUrlWithJwtToken)
 			}
 
 		}
