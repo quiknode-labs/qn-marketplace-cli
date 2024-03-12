@@ -38,7 +38,7 @@ Learn more at https://www.quicknode.com/guides/quicknode-products/marketplace/ho
 			Chain:             cmd.Flag("chain").Value.String(),
 			Network:           cmd.Flag("network").Value.String(),
 			Plan:              cmd.Flag("plan").Value.String(),
-			WSSURL:            "wss://long-late-firefly.quiknode.pro/4bb1e6b2dec8294938b6fdfdb7cf0cf70c4e97a2/",
+			WSSURL:            cmd.Flag("wss-url").Value.String(),
 			HTTPURL:           cmd.Flag("endpoint-url").Value.String(),
 			Referers:          []string{"https://quicknode.com"},
 			ContractAddresses: []string{"0x4d224452801ACEd8B2F0aebE155379bb5D594381"},
@@ -91,6 +91,7 @@ func init() {
 	provisionCmd.PersistentFlags().StringP("quicknode-id", "q", uuid.NewV4().String(), "The QuickNode ID to provision the add-on for (optional)")
 	provisionCmd.PersistentFlags().StringP("endpoint-id", "e", uuid.NewV4().String(), "The endpoint ID to provision the add-on for (optional)")
 	provisionCmd.PersistentFlags().StringP("endpoint-url", "l", "https://long-late-firefly.quiknode.pro/4bb1e6b2dec8294938b6fdfdb7cf0cf70c4e97a2/", "The endpoint URL to provision the add-on for (optional - defaults to an ethereum mainnet endpoint")
+	provisionCmd.PersistentFlags().StringP("wss-url", "w", "wss://long-late-firefly.quiknode.pro/4bb1e6b2dec8294938b6fdfdb7cf0cf70c4e97a2/", "The WSS URL to provision the add-on for (optional - defaults to an ethereum mainnet endpoint")
 	provisionCmd.PersistentFlags().StringP("chain", "c", "ethereum", "The chain to provision the add-on for")
 	provisionCmd.PersistentFlags().StringP("network", "n", "mainnet", "The network to provision the add-on for")
 	provisionCmd.PersistentFlags().StringP("plan", "p", "discover", "The plan to provision the add-on for")
