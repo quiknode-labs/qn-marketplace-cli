@@ -7,7 +7,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	"time"
 
 	"github.com/fatih/color"
 	"github.com/quiknode-labs/qn-marketplace-cli/marketplace"
@@ -34,11 +33,7 @@ Learn more at https://www.quicknode.com/guides/quicknode-products/marketplace/ho
 		}
 
 		request := marketplace.DeprovisionRequest{
-			QuickNodeId:   cmd.Flag("quicknode-id").Value.String(),
-			EndpointId:    cmd.Flag("endpoint-id").Value.String(),
-			Chain:         cmd.Flag("chain").Value.String(),
-			Network:       cmd.Flag("network").Value.String(),
-			DeprovisionAt: time.Now().Unix(),
+			QuickNodeId: cmd.Flag("quicknode-id").Value.String(),
 		}
 
 		// Check that it is protected by basic auth
@@ -84,7 +79,4 @@ func init() {
 	deprovisionCmd.PersistentFlags().String("basic-auth", "QWxhZGRpbjpvcGVuIHNlc2FtZQ==", "The basic auth credentials for the add-on. Defaults to username = Aladdin and password = open sesame")
 
 	deprovisionCmd.PersistentFlags().StringP("quicknode-id", "q", uuid.NewV4().String(), "The QuickNode ID to provision the add-on for (optional)")
-	deprovisionCmd.PersistentFlags().StringP("endpoint-id", "e", uuid.NewV4().String(), "The endpoint ID to provision the add-on for (optional)")
-	deprovisionCmd.PersistentFlags().StringP("chain", "c", "ethereum", "The chain to provision the add-on for")
-	deprovisionCmd.PersistentFlags().StringP("network", "n", "mainnet", "The network to provision the add-on for")
 }

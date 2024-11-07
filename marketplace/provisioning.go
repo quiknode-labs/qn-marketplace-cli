@@ -55,11 +55,7 @@ type DeactivateResponse struct {
 }
 
 type DeprovisionRequest struct {
-	QuickNodeId   string `json:"quicknode-id"`
-	EndpointId    string `json:"endpoint-id"`
-	Chain         string `json:"chain"`
-	Network       string `json:"network"`
-	DeprovisionAt int64  `json:"deprovision-at"`
+	QuickNodeId string `json:"quicknode-id"`
 }
 
 type DeprovisionResponse struct {
