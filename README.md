@@ -43,31 +43,31 @@ The `qn-marketplace-cli` has 4 different commands that allows you to test each o
 PROVISION:
 
 ```sh
-qn-marketplace-cli provision --url=http://localhost:3000/provision --basic-auth=q24rqaergser --chain=ethereum --network=mainnet --plan=your-plan-slug --quicknode-id=abcdef --endpoint-id=foobar --endpoint-url=https://long-late-firefly.quiknode.pro/4bb1e6b2dec8294938b6fdfdb7cf0cf70c4e97a2/ --wss-url=wss://long-late-firefly.quiknode.pro/4bb1e6b2dec8294938b6fdfdb7cf0cf70c4e97a2/
+qn-marketplace-cli provision --url=http://localhost:3000/provision --basic-auth=q24rqaergser --chain=ethereum --network=mainnet --plan=your-plan-slug --quicknode-id=abcdef --endpoint-id=foobar --endpoint-url=https://long-late-firefly.quiknode.pro/4bb1e6b2dec8294938b6fdfdb7cf0cf70c4e97a2/ --wss-url=wss://long-late-firefly.quiknode.pro/4bb1e6b2dec8294938b6fdfdb7cf0cf70c4e97a2/ --add-on-id 33 --add-on-slug your-addon-slug
 ```
 
 UPDATE:
 
 ```sh
-qn-marketplace-cli update --url=http://localhost:3000/update --basic-auth=q24rqaergser --chain=ethereum --network=mainnet --plan=your-plan-slug --quicknode-id=abcdef --endpoint-id=foobar --endpoint-url=https://long-late-firefly.quiknode.pro/4bb1e6b2dec8294938b6fdfdb7cf0cf70c4e97a2/ --wss-url=wss://long-late-firefly.quiknode.pro/4bb1e6b2dec8294938b6fdfdb7cf0cf70c4e97a2/
+qn-marketplace-cli update --url=http://localhost:3000/update --basic-auth=q24rqaergser --chain=ethereum --network=mainnet --plan=your-plan-slug --quicknode-id=abcdef --endpoint-id=foobar --endpoint-url=https://long-late-firefly.quiknode.pro/4bb1e6b2dec8294938b6fdfdb7cf0cf70c4e97a2/ --wss-url=wss://long-late-firefly.quiknode.pro/4bb1e6b2dec8294938b6fdfdb7cf0cf70c4e97a2/ --add-on-id 33 --add-on-slug your-addon-slug
 ```
 
 DEACTIVATE ENDPOINT:
 
 ```sh
-qn-marketplace-cli deactivate --url=http://localhost:3000/deactivate_endpoint --basic-auth=q24rqaergser --endpoint-id=foobar
+qn-marketplace-cli deactivate --url=http://localhost:3000/deactivate_endpoint --basic-auth=q24rqaergser --endpoint-id=foobar --add-on-id 33 --add-on-slug your-addon-slug
 ```
 
 DEPROVISION:
 
 ```sh
-qn-marketplace-cli deprovision --url=http://localhost:3000/deprovision --basic-auth=q24rqaergser --quicknode-id=abcdef
+qn-marketplace-cli deprovision --url=http://localhost:3000/deprovision --basic-auth=q24rqaergser --quicknode-id=abcdef --add-on-id 33 --add-on-slug your-addon-slug
 ```
 
 It also has one command that allows you to test all four actions at once:
 
 ```sh
-qn-marketplace-cli pudd --base-url=http://localhost:3000/ --basic-auth=q24rqaergser --chain=ethereum --network=mainnet --plan=your-plan-slug --endpoint-url=https://long-late-firefly.quiknode.pro/4bb1e6b2dec8294938b6fdfdb7cf0cf70c4e97a2/ --wss-url=wss://long-late-firefly.quiknode.pro/4bb1e6b2dec8294938b6fdfdb7cf0cf70c4e97a2/
+qn-marketplace-cli pudd --base-url=http://localhost:3000/ --basic-auth=q24rqaergser --chain=ethereum --network=mainnet --plan=your-plan-slug --endpoint-url=https://long-late-firefly.quiknode.pro/4bb1e6b2dec8294938b6fdfdb7cf0cf70c4e97a2/ --wss-url=wss://long-late-firefly.quiknode.pro/4bb1e6b2dec8294938b6fdfdb7cf0cf70c4e97a2/ --add-on-id 33 --add-on-slug your-addon-slug
 ```
 
 ### JSON-RPC Testing
@@ -78,7 +78,7 @@ Please read [this guide](https://www.quicknode.com/guides/quicknode-products/mar
 If your add-on has RPC methods, the `qn-marketplace-cli` allows you to test your implementation by making some JSON-RPC calls to your application.
 
 ```sh
-qn-marketplace-cli rpc  --url=http://localhost:3000/rpc --method=your_addOnMethod --rpc-params='[9, "f"]' --chain=solana --network=mainnet --endpoint-url=https://long-late-firefly.quiknode.pro/4bb1e6b2dec8294938b6fdfdb7cf0cf70c4e97a2/ --wss-url=wss://long-late-firefly.quiknode.pro/4bb1e6b2dec8294938b6fdfdb7cf0cf70c4e97a2/
+qn-marketplace-cli rpc  --url=http://localhost:3000/rpc --method=your_addOnMethod --rpc-params='[9, "f"]' --chain=solana --network=mainnet --endpoint-url=https://long-late-firefly.quiknode.pro/4bb1e6b2dec8294938b6fdfdb7cf0cf70c4e97a2/ --wss-url=wss://long-late-firefly.quiknode.pro/4bb1e6b2dec8294938b6fdfdb7cf0cf70c4e97a2/ --add-on-id 33 --add-on-slug your-addon-slug
 ```
 
 ## Development

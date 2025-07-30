@@ -34,6 +34,8 @@ Learn more at https://www.quicknode.com/guides/quicknode-products/marketplace/ho
 
 		request := marketplace.DeprovisionRequest{
 			QuickNodeId: cmd.Flag("quicknode-id").Value.String(),
+			AddOnId:     cmd.Flag("add-on-id").Value.String(),
+			AddOnSlug:   cmd.Flag("add-on-slug").Value.String(),
 		}
 
 		// Check that it is protected by basic auth
@@ -79,4 +81,6 @@ func init() {
 	deprovisionCmd.PersistentFlags().String("basic-auth", "QWxhZGRpbjpvcGVuIHNlc2FtZQ==", "The basic auth credentials for the add-on. Defaults to username = Aladdin and password = open sesame")
 
 	deprovisionCmd.PersistentFlags().StringP("quicknode-id", "q", uuid.NewV4().String(), "The QuickNode ID to provision the add-on for (optional)")
+	deprovisionCmd.PersistentFlags().StringP("add-on-id", "i", "33", "The ID of the add-on to provision")
+	deprovisionCmd.PersistentFlags().StringP("add-on-slug", "s", "myslug", "The slug of the add-on to provision")
 }

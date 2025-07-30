@@ -1,6 +1,5 @@
 /*
 Copyright © 2023 QuickNode, Inc.
-
 */
 package cmd
 
@@ -39,6 +38,8 @@ Learn more at https://www.quicknode.com/guides/quicknode-products/marketplace/ho
 			Chain:        cmd.Flag("chain").Value.String(),
 			Network:      cmd.Flag("network").Value.String(),
 			DeactivateAt: time.Now().Unix(),
+			AddOnId:      cmd.Flag("add-on-id").Value.String(),
+			AddOnSlug:    cmd.Flag("add-on-slug").Value.String(),
 		}
 
 		// Check that it is protected by basic auth
@@ -87,4 +88,6 @@ func init() {
 	deactivateCmd.PersistentFlags().StringP("endpoint-id", "e", uuid.NewV4().String(), "The endpoint ID to provision the add-on for (optional)")
 	deactivateCmd.PersistentFlags().StringP("chain", "c", "ethereum", "The chain to provision the add-on for")
 	deactivateCmd.PersistentFlags().StringP("network", "n", "mainnet", "The network to provision the add-on for")
+	deactivateCmd.PersistentFlags().StringP("add-on-id", "i", "33", "The ID of the add-on to provision")
+	deactivateCmd.PersistentFlags().StringP("add-on-slug", "s", "myslug", "The slug of the add-on to provision")
 }

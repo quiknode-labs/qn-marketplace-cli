@@ -42,6 +42,8 @@ Learn more at https://www.quicknode.com/guides/quicknode-products/marketplace/ho
 			HTTPURL:           cmd.Flag("endpoint-url").Value.String(),
 			Referers:          []string{"https://quicknode.com"},
 			ContractAddresses: []string{"0x4d224452801ACEd8B2F0aebE155379bb5D594381"},
+			AddOnSlug:         cmd.Flag("add-on-slug").Value.String(),
+			AddOnId:           cmd.Flag("add-on-id").Value.String(),
 		}
 
 		// Check that it is protected by basic auth
@@ -95,4 +97,6 @@ func init() {
 	provisionCmd.PersistentFlags().StringP("chain", "c", "ethereum", "The chain to provision the add-on for")
 	provisionCmd.PersistentFlags().StringP("network", "n", "mainnet", "The network to provision the add-on for")
 	provisionCmd.PersistentFlags().StringP("plan", "p", "discover", "The plan to provision the add-on for")
+	provisionCmd.PersistentFlags().StringP("add-on-id", "i", "33", "The ID of the add-on to provision")
+	provisionCmd.PersistentFlags().StringP("add-on-slug", "s", "myslug", "The slug of the add-on to provision")
 }

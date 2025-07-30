@@ -43,18 +43,20 @@ var restCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		// First Provision
-		request := marketplace.ProvisionRequest{
-			QuickNodeId:       cmd.Flag("quicknode-id").Value.String(),
-			EndpointId:        cmd.Flag("endpoint-id").Value.String(),
-			Chain:             cmd.Flag("chain").Value.String(),
-			Network:           cmd.Flag("network").Value.String(),
-			Plan:              cmd.Flag("plan").Value.String(),
-			WSSURL:            cmd.Flag("wss-url").Value.String(),
-			HTTPURL:           cmd.Flag("endpoint-url").Value.String(),
-			Referers:          []string{"https://quicknode.com"},
-			ContractAddresses: []string{"0x4d224452801ACEd8B2F0aebE155379bb5D594381"},
-		}
+	// First Provision
+	request := marketplace.ProvisionRequest{
+		QuickNodeId:       cmd.Flag("quicknode-id").Value.String(),
+		EndpointId:        cmd.Flag("endpoint-id").Value.String(),
+		Chain:             cmd.Flag("chain").Value.String(),
+		Network:           cmd.Flag("network").Value.String(),
+		Plan:              cmd.Flag("plan").Value.String(),
+		WSSURL:            cmd.Flag("wss-url").Value.String(),
+		HTTPURL:           cmd.Flag("endpoint-url").Value.String(),
+		Referers:          []string{"https://quicknode.com"},
+		ContractAddresses: []string{"0x4d224452801ACEd8B2F0aebE155379bb5D594381"},
+		AddOnSlug:         cmd.Flag("add-on-slug").Value.String(),
+		AddOnId:           cmd.Flag("add-on-id").Value.String(),
+	}
 
 		if verbose {
 			color.Blue("→ POST %s:\n", provisionURL)
@@ -144,6 +146,8 @@ func init() {
 	restCmd.PersistentFlags().StringP("chain", "c", "ethereum", "The chain to provision the add-on for")
 	restCmd.PersistentFlags().StringP("network", "n", "mainnet", "The network to provision the add-on for")
 	restCmd.PersistentFlags().StringP("plan", "p", "discover", "The plan to provision the add-on for")
+	restCmd.PersistentFlags().StringP("add-on-id", "i", "33", "The ID of the add-on to provision")
+	restCmd.PersistentFlags().StringP("add-on-slug", "s", "myslug", "The slug of the add-on to provision")
 
 	restCmd.PersistentFlags().String("rest-url", "", "The URL to make the REST calls to")
 	restCmd.PersistentFlags().String("rest-verb", "", "The REST HTTP Method or verb to use (e.g. GET or POST)")
