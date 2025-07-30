@@ -18,6 +18,8 @@ type ProvisionRequest struct {
 	HTTPURL           string   `json:"http-url"`
 	Referers          []string `json:"referers"`
 	ContractAddresses []string `json:"contract_addresses"`
+	AddOnSlug         string   `json:"add-on-slug"`
+	AddOnId           string   `json:"add-on-id"`
 }
 
 type ProvisionResponse struct {
@@ -36,6 +38,8 @@ type UpdateRequest struct {
 	HTTPURL           string   `json:"http-url"`
 	Referers          []string `json:"referers"`
 	ContractAddresses []string `json:"contract_addresses"`
+	AddOnSlug         string   `json:"add-on-slug"`
+	AddOnId           string   `json:"add-on-id"`
 }
 
 type UpdateResponse struct {
@@ -48,6 +52,8 @@ type DeactivateRequest struct {
 	Chain        string `json:"chain"`
 	Network      string `json:"network"`
 	DeactivateAt int64  `json:"deactivate-at"`
+	AddOnId      string `json:"add-on-id"`
+	AddOnSlug    string `json:"add-on-slug"`
 }
 
 type DeactivateResponse struct {
@@ -56,6 +62,8 @@ type DeactivateResponse struct {
 
 type DeprovisionRequest struct {
 	QuickNodeId string `json:"quicknode-id"`
+	AddOnId     string `json:"add-on-id"`
+	AddOnSlug   string `json:"add-on-slug"`
 }
 
 type DeprovisionResponse struct {

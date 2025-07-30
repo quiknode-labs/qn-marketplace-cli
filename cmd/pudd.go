@@ -40,18 +40,20 @@ The tool will use the base-url you pass to it and append these to the base URL t
 			os.Exit(1)
 		}
 
-		// First Provision
-		request := marketplace.ProvisionRequest{
-			QuickNodeId:       cmd.Flag("quicknode-id").Value.String(),
-			EndpointId:        cmd.Flag("endpoint-id").Value.String(),
-			Chain:             cmd.Flag("chain").Value.String(),
-			Network:           cmd.Flag("network").Value.String(),
-			Plan:              cmd.Flag("plan").Value.String(),
-			WSSURL:            cmd.Flag("wss-url").Value.String(),
-			HTTPURL:           cmd.Flag("endpoint-url").Value.String(),
-			Referers:          []string{"https://quicknode.com"},
-			ContractAddresses: []string{"0x4d224452801ACEd8B2F0aebE155379bb5D594381"},
-		}
+	// First Provision
+	request := marketplace.ProvisionRequest{
+		QuickNodeId:       cmd.Flag("quicknode-id").Value.String(),
+		EndpointId:        cmd.Flag("endpoint-id").Value.String(),
+		Chain:             cmd.Flag("chain").Value.String(),
+		Network:           cmd.Flag("network").Value.String(),
+		Plan:              cmd.Flag("plan").Value.String(),
+		WSSURL:            cmd.Flag("wss-url").Value.String(),
+		HTTPURL:           cmd.Flag("endpoint-url").Value.String(),
+		Referers:          []string{"https://quicknode.com"},
+		ContractAddresses: []string{"0x4d224452801ACEd8B2F0aebE155379bb5D594381"},
+		AddOnSlug:         cmd.Flag("add-on-slug").Value.String(),
+		AddOnId:           cmd.Flag("add-on-id").Value.String(),
+	}
 
 		provisionUrl := baseUrl + "/provision"
 
@@ -117,17 +119,19 @@ The tool will use the base-url you pass to it and append these to the base URL t
 			color.Blue("\n\n→ PUT %s:\n", updateUrl)
 		}
 
-		updateRequest := marketplace.UpdateRequest{
-			QuickNodeId:       cmd.Flag("quicknode-id").Value.String(),
-			EndpointId:        cmd.Flag("endpoint-id").Value.String(),
-			Chain:             cmd.Flag("chain").Value.String(),
-			Network:           cmd.Flag("network").Value.String(),
-			Plan:              cmd.Flag("plan").Value.String(),
-			WSSURL:            cmd.Flag("wss-url").Value.String(),
-			HTTPURL:           cmd.Flag("endpoint-url").Value.String(),
-			Referers:          []string{"https://quicknode.com"},
-			ContractAddresses: []string{"0x4d224452801ACEd8B2F0aebE155379bb5D594381"},
-		}
+	updateRequest := marketplace.UpdateRequest{
+		QuickNodeId:       cmd.Flag("quicknode-id").Value.String(),
+		EndpointId:        cmd.Flag("endpoint-id").Value.String(),
+		Chain:             cmd.Flag("chain").Value.String(),
+		Network:           cmd.Flag("network").Value.String(),
+		Plan:              cmd.Flag("plan").Value.String(),
+		WSSURL:            cmd.Flag("wss-url").Value.String(),
+		HTTPURL:           cmd.Flag("endpoint-url").Value.String(),
+		Referers:          []string{"https://quicknode.com"},
+		ContractAddresses: []string{"0x4d224452801ACEd8B2F0aebE155379bb5D594381"},
+		AddOnSlug:         cmd.Flag("add-on-slug").Value.String(),
+		AddOnId:           cmd.Flag("add-on-id").Value.String(),
+	}
 
 		// Check that it is protected by basic auth
 		updateIsProtectedByBasicAuth, err := marketplace.RequiresBasicAuth(updateUrl, "PUT")
@@ -164,13 +168,15 @@ The tool will use the base-url you pass to it and append these to the base URL t
 		if verbose {
 			color.Blue("\n\n→ DELETE %s:\n", deactivateUrl)
 		}
-		deactivateRequest := marketplace.DeactivateRequest{
-			QuickNodeId:  cmd.Flag("quicknode-id").Value.String(),
-			EndpointId:   cmd.Flag("endpoint-id").Value.String(),
-			Chain:        cmd.Flag("chain").Value.String(),
-			Network:      cmd.Flag("network").Value.String(),
-			DeactivateAt: time.Now().Unix(),
-		}
+	deactivateRequest := marketplace.DeactivateRequest{
+		QuickNodeId:  cmd.Flag("quicknode-id").Value.String(),
+		EndpointId:   cmd.Flag("endpoint-id").Value.String(),
+		Chain:        cmd.Flag("chain").Value.String(),
+		Network:      cmd.Flag("network").Value.String(),
+		DeactivateAt: time.Now().Unix(),
+		AddOnId:      cmd.Flag("add-on-id").Value.String(),
+		AddOnSlug:    cmd.Flag("add-on-slug").Value.String(),
+	}
 
 		// Check that it is protected by basic auth
 		deactivateIsProtectedByBasicAuth, err := marketplace.RequiresBasicAuth(deactivateUrl, "DELETE")
@@ -202,11 +208,13 @@ The tool will use the base-url you pass to it and append these to the base URL t
 
 		color.Green("  ✓ Deactivate Endpoint was successful")
 
-		// Finally, deprovision
-		deprovisionUrl := baseUrl + "/deprovision"
-		deprovisionRequest := marketplace.DeprovisionRequest{
-			QuickNodeId: cmd.Flag("quicknode-id").Value.String(),
-		}
+	// Finally, deprovision
+	deprovisionUrl := baseUrl + "/deprovision"
+	deprovisionRequest := marketplace.DeprovisionRequest{
+		QuickNodeId: cmd.Flag("quicknode-id").Value.String(),
+		AddOnId:     cmd.Flag("add-on-id").Value.String(),
+		AddOnSlug:   cmd.Flag("add-on-slug").Value.String(),
+	}
 
 		// Check that it is protected by basic auth
 		deprovisionIsProtectedByBasicAuth, err := marketplace.RequiresBasicAuth(deprovisionUrl, "DELETE")
@@ -258,4 +266,6 @@ func init() {
 	puddCmd.PersistentFlags().StringP("chain", "c", "ethereum", "The chain to provision the add-on for")
 	puddCmd.PersistentFlags().StringP("network", "n", "mainnet", "The network to provision the add-on for")
 	puddCmd.PersistentFlags().StringP("plan", "p", "discover", "The plan to provision the add-on for")
+	puddCmd.PersistentFlags().StringP("add-on-id", "i", "33", "The ID of the add-on to provision")
+	puddCmd.PersistentFlags().StringP("add-on-slug", "s", "myslug", "The slug of the add-on to provision")
 }
