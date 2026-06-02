@@ -118,22 +118,25 @@ var restCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
+		printBody := func(b []byte) {
+			if len(b) == 0 {
+				return
+			}
+			var respBody interface{}
+			if jsonErr := json.Unmarshal(b, &respBody); jsonErr == nil {
+				responseJson, _ := json.MarshalIndent(respBody, "", "  ")
+				color.White("\n%s\n", responseJson)
+			} else {
+				color.White("\n%s\n", string(b))
+			}
+		}
+
 		if resp.StatusCode == 200 {
 			color.Green("  ✓ REST call was successful and returned:")
-			if len(body) > 0 {
-				var respBody interface{}
-				if jsonErr := json.Unmarshal(body, &respBody); jsonErr == nil {
-					responseJson, _ := json.MarshalIndent(respBody, "", "  ")
-					color.White("\n%s\n", responseJson)
-				} else {
-					color.White("\n%s\n", string(body))
-				}
-			}
+			printBody(body)
 		} else {
 			color.Red("  ✘ REST call failed:     %s\n\n", resp.Status)
-			if len(body) > 0 {
-				color.White("\n%s\n", string(body))
-			}
+			printBody(body)
 			os.Exit(1)
 		}
 	},
