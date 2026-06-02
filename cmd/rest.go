@@ -6,6 +6,7 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 	"strings"
@@ -111,21 +112,28 @@ var restCmd = &cobra.Command{
 		}
 		defer resp.Body.Close()
 
-		// Decode the response body into an interface{} object
-		var respBody interface{}
-		err = json.NewDecoder(resp.Body).Decode(&respBody)
+		body, err := io.ReadAll(resp.Body)
 		if err != nil {
-			color.Red("Error decoding JSON:", err)
+			color.Red("Error reading response body: %s", err)
 			os.Exit(1)
 		}
 
-		responseJson, _ := json.MarshalIndent(respBody, "", "  ")
 		if resp.StatusCode == 200 {
 			color.Green("  ✓ REST call was successful and returned:")
-			color.White("\n%s\n", responseJson)
+			if len(body) > 0 {
+				var respBody interface{}
+				if jsonErr := json.Unmarshal(body, &respBody); jsonErr == nil {
+					responseJson, _ := json.MarshalIndent(respBody, "", "  ")
+					color.White("\n%s\n", responseJson)
+				} else {
+					color.White("\n%s\n", string(body))
+				}
+			}
 		} else {
 			color.Red("  ✘ REST call failed:     %s\n\n", resp.Status)
-			color.White("\n%s\n", responseJson)
+			if len(body) > 0 {
+				color.White("\n%s\n", string(body))
+			}
 			os.Exit(1)
 		}
 	},
