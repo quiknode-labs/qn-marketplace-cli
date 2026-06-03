@@ -44,6 +44,9 @@ var rpcCmd = &cobra.Command{
 			os.Exit(1)
 		}
 		mode := detectAuthMode(provisionURL, customHeaders, cmd.Flag("basic-auth").Changed)
+		if mode == authModeProvisioning && len(customHeaders) > 0 {
+			color.Yellow("Warning: --header flags are ignored in provisioning mode\n")
+		}
 
 		quicknodeID := cmd.Flag("quicknode-id").Value.String()
 		endpointID := cmd.Flag("endpoint-id").Value.String()
