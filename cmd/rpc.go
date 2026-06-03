@@ -38,7 +38,11 @@ var rpcCmd = &cobra.Command{
 		}
 
 		provisionURL := cmd.Flag("url").Value.String()
-		customHeaders, _ := cmd.Flags().GetStringArray("header")
+		customHeaders, err := cmd.Flags().GetStringArray("header")
+		if err != nil {
+			color.Red("Error reading --header flag: %s", err)
+			os.Exit(1)
+		}
 		mode := detectAuthMode(provisionURL, customHeaders, cmd.Flag("basic-auth").Changed)
 
 		quicknodeID := cmd.Flag("quicknode-id").Value.String()
@@ -113,16 +117,16 @@ var rpcCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
+		for _, w := range applyAuthHeaders(httpReq, mode, customHeaders, cmd.Flag("basic-auth").Value.String()) {
+			color.Yellow("Warning: %s\n", w)
+		}
+
 		httpReq.Header.Set("Content-Type", "application/json")
 		httpReq.Header.Set("X-QUICKNODE-ID", quicknodeID)
 		httpReq.Header.Set("X-INSTANCE-ID", endpointID)
 		httpReq.Header.Set("X-QN-CHAIN", cmd.Flag("chain").Value.String())
 		httpReq.Header.Set("X-QN-NETWORK", cmd.Flag("network").Value.String())
 		httpReq.Header.Add("X-QN-TESTING", "true")
-
-		for _, w := range applyAuthHeaders(httpReq, mode, customHeaders, cmd.Flag("basic-auth").Value.String()) {
-			color.Yellow("Warning: %s\n", w)
-		}
 
 		client := http.Client{}
 		resp, err := client.Do(httpReq)
