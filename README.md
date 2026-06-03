@@ -81,6 +81,32 @@ If your add-on has RPC methods, the `qn-marketplace-cli` allows you to test your
 qn-marketplace-cli rpc  --url=http://localhost:3000/rpc --method=your_addOnMethod --rpc-params='[9, "f"]' --chain=solana --network=mainnet --endpoint-url=https://long-late-firefly.quiknode.pro/4bb1e6b2dec8294938b6fdfdb7cf0cf70c4e97a2/ --wss-url=wss://long-late-firefly.quiknode.pro/4bb1e6b2dec8294938b6fdfdb7cf0cf70c4e97a2/ --add-on-id 33 --add-on-slug your-addon-slug
 ```
 
+#### RPC and REST Auth Modes
+
+The `rpc` and `rest` commands support four auth modes, selected implicitly based on which flags are provided:
+
+| Mode | Trigger | Description |
+|------|---------|-------------|
+| Provisioning | `--url` is provided | Calls your provision endpoint first, then the RPC/REST URL |
+| Header auth | `--header` is provided | Forwards custom headers to the RPC/REST URL, skips provisioning |
+| Basic auth | `--basic-auth` is explicitly set (without `--url`) | Sends `Authorization: Basic <value>` to the RPC/REST URL |
+| No auth | None of the above flags | Calls the RPC/REST URL with no auth headers |
+
+**Header auth example:**
+```sh
+qn-marketplace-cli rpc --rpc-url=http://localhost:3000/rpc --rpc-method=your_addOnMethod --header "X-API-Key: secret" --header "X-Tenant: foo"
+```
+
+**Basic auth on the RPC endpoint directly (no provisioning):**
+```sh
+qn-marketplace-cli rpc --rpc-url=http://localhost:3000/rpc --rpc-method=your_addOnMethod --basic-auth dXNlcjpwYXNz
+```
+
+**No auth:**
+```sh
+qn-marketplace-cli rpc --rpc-url=http://localhost:3000/rpc --rpc-method=your_addOnMethod
+```
+
 ## Development
 
 `qn-marketplace-cli` is developed using [Go](https://go.dev/) and [Cobra](https://github.com/spf13/cobra) and released under an [MIT License](./LICENSE.txt).
