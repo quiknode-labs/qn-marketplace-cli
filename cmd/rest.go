@@ -109,7 +109,7 @@ var restCmd = &cobra.Command{
 		httpReq.Header.Set("X-INSTANCE-ID", endpointID)
 		httpReq.Header.Set("X-QN-CHAIN", cmd.Flag("chain").Value.String())
 		httpReq.Header.Set("X-QN-NETWORK", cmd.Flag("network").Value.String())
-		httpReq.Header.Add("X-QN-TESTING", "true")
+		httpReq.Header.Set("X-QN-TESTING", "true")
 
 		client := http.Client{}
 		resp, err := client.Do(httpReq)
